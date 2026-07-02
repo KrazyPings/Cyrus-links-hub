@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyrusLinksHub | PaperMC Build Engine Diagnostic Suite</title>
+    <meta name="description" content="Professional real-time tracking engine for automated tracking and direct distribution maps of PaperMC core binaries.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        /* Base Global Themes to align with your existing Cyberpunk Telemetry theme */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0a0c16;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .checker-card {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ff4d94, #6e6bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .section-title p {
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        /* Control Form Inputs */
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        .server-input {
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            outline: none;
+            transition: 0.3s;
+        }
+        #mcVersion { flex: 2; width: auto; }
+        .server-input:focus {
+            border-color: #ff4d94;
+            background: rgba(255, 77, 148, 0.04);
+            box-shadow: 0 0 15px rgba(255, 77, 148, 0.2);
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #ff4d94, #6e6bff);
+            border: none;
+            color: white;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.5);
+        }
+
+        /* Status & Telemetry Output Maps */
+        .status-display {
+            margin-top: 35px;
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 30px;
+            text-align: left;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .telemetry-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 18px;
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+        .telemetry-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 100%;
+            background: #ff4d94;
+        }
+        .telemetry-box.purple::before { background: #6e6bff; }
+        .telemetry-box.blue::before { background: #1be7ff; }
+        
+        .telemetry-box span {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .telemetry-box h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            margin-top: 6px;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        /* Download Elements */
+        .download-panel {
+            margin-top: 25px;
+            background: rgba(110, 107, 255, 0.05);
+            border: 1px solid rgba(110, 107, 255, 0.2);
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #1be7ff, #6e6bff);
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            padding: 16px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-download:hover {
+            color: #fff;
+            box-shadow: 0 0 25px rgba(27, 231, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .changelog-container {
+            background: #02040a;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #a4b1cd;
+            font-size: 13px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .loader {
+            display: none;
+            font-size: 20px;
+            font-family: 'Orbitron', sans-serif;
+            color: #ff4d94;
+            margin-top: 30px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #ff4d94; }
+
+        @media(max-width: 768px) {
+            .input-group { flex-direction: column; }
+            #mcVersion, .btn-check { width: 100%; }
+            .download-panel { flex-direction: column; text-align: center; }
+            .btn-download { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <div class="container">
+            <div class="glass-card checker-card">
+                
+                <div class="section-title">
+                    <h2>PAPERMC BUILD ENGINE</h2>
+                    <p>Track core binary architectures, runtime hashes, and access targeted system infrastructure downloads.</p>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="mcVersion" class="server-input" placeholder="Minecraft Version (e.g., 1.21.1, 1.20.4 or leave blank for latest)" autocomplete="off">
+                    <button onclick="fetchPaperTelemetry()" class="btn-check">
+                        <i class="fa-solid fa-microchip"></i> Sync Core Metrics
+                    </button>
+                </div>
+
+                <!-- LOADING INDICATOR -->
+                <div id="loadingIndicator" class="loader">
+                    <i class="fa-solid fa-sync fa-spin"></i> Polling Secure PaperMC Manifest Repositories...
+                </div>
+
+                <!-- DISPLAY TELEMETRY LAYER -->
+                <div id="telemetryResult" class="status-display">
+                    
+                    <div class="telemetry-grid">
+                        <div class="telemetry-box">
+                            <span>Project Vector</span>
+                            <h4 id="nodeProject">Paper</h4>
+                        </div>
+                        <div class="telemetry-box purple">
+                            <span>Target Engine</span>
+                            <h4 id="nodeVersion">--</h4>
+                        </div>
+                        <div class="telemetry-box blue">
+                            <span>Latest Build ID</span>
+                            <h4 id="nodeBuild">--</h4>
+                        </div>
+                    </div>
+
+                    <!-- DIRECT DOWNLOAD ACCESS BLOCK -->
+                    <div class="download-panel">
+                        <div>
+                            <h3 id="targetJarName" style="font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff;">paper-core.jar</h3>
+                            <p id="targetHash" style="font-size: 12px; color: rgba(255,255,255,0.4); font-family: monospace; margin-top: 4px;">SHA256: --</p>
+                        </div>
+                        <a id="directDownloadLink" href="#" class="btn-download" target="_blank">
+                            <i class="fa-solid fa-cloud-arrow-down"></i> Direct Download
+                        </a>
+                    </div>
+
+                    <!-- REVISIONS AND CHANGES BLOCK -->
+                    <h4 style="margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Build Architecture Commit Log</h4>
+                    <div id="commitChangelog" class="changelog-container"></div>
+
+                </div>
+
+                <a href="tools.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Default execution on page initialization to pull the fallback absolute latest release automatically
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchPaperTelemetry(true);
+        });
+
+        async function fetchPaperTelemetry(isAutoLoad = false) {
+            let versionInput = document.getElementById('mcVersion').value.trim();
+            const loader = document.getElementById('loadingIndicator');
+            const resultBox = document.getElementById('telemetryResult');
+
+            loader.style.display = 'block';
+            if(!isAutoLoad) resultBox.style.display = 'none';
+
+            try {
+                // Step 1: Resolve Target Version if blank
+                if (!versionInput) {
+                    const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
+                    const projectData = await projectRes.json();
+                    // Take the absolute last indexed version array element (newest release)
+                    versionInput = projectData.versions[projectData.versions.length - 1];
+                    document.getElementById('mcVersion').value = versionInput;
+                }
+
+                // Step 2: Fetch specific version builds registry metadata
+                const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}`);
+                if (!versionRes.ok) throw new Error('Invalid version mapping node identity string.');
+                
+                const versionData = await versionRes.json();
+                const latestBuild = versionData.builds[versionData.builds.length - 1];
+
+                // Step 3: Fetch unique build payload metrics
+                const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}`);
+                const buildData = await buildRes.json();
+
+                // UI Processing Metrics Injector
+                loader.style.display = 'none';
+                resultBox.style.display = 'block';
+
+                document.getElementById('nodeVersion').innerText = versionInput;
+                document.getElementById('nodeBuild').innerText = `#${latestBuild}`;
+                
+                const applicationJarName = buildData.downloads.application.name;
+                const applicationHash = buildData.downloads.application.sha256;
+                
+                document.getElementById('targetJarName').innerText = applicationJarName;
+                document.getElementById('targetHash').innerText = `SHA256: ${applicationHash}`;
+
+                // STEP 4: Build structural Direct Download Matrix Link directly pointing to the official storage mirrors
+                const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}/downloads/${applicationJarName}`;
+                document.getElementById('directDownloadLink').href = absoluteDownloadUrl;
+
+                // Step 5: Process Changes entries to make scannable logs
+                const changelogBox = document.getElementById('commitChangelog');
+                if (buildData.changes && buildData.changes.length > 0) {
+                    let logs = '';
+                    buildData.changes.forEach(change => {
+                        logs += `[Commit: ${change.commit.substring(0, 7)}] - ${change.summary}\n`;
+                    });
+                    changelogBox.innerText = logs;
+                } else {
+                    changelogBox.innerText = 'Synchronized structure complete: This build contains internal optimization layers or standard performance adjustments.';
+                }
+
+            } catch (err) {
+                loader.style.display = 'none';
+                alert('Handshake Error: Failed to fetch metadata for the specified Minecraft version.');
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
