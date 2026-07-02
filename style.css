@@ -532,3 +532,26 @@ section {
 ::-webkit-scrollbar-track { background: #05080f; }
 ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #6e6bff, #1be7ff); border-radius: 10px; }
 ::selection { background: #1be7ff; color: #000; }
+
+/* ==========================================================================
+   8. ANTI-COPY & CONTENT PROTECTION (PC & MOBILE)
+   ========================================================================== */
+body, html {
+    /* Disables text selection across all desktop browsers */
+    -webkit-user-select: none;  
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    user-select: none;          
+
+    /* CRITICAL FOR PHONES: Disables the magnifying glass/long-press menu on iOS and Android */
+    -webkit-touch-callout: none; 
+}
+
+/* Keeps interactive inputs functioning normally if you ever add them */
+input, textarea, select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+}
