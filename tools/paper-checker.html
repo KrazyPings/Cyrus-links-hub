@@ -178,6 +178,28 @@
             color: #1be7ff;
             margin-top: 30px;
         }
+
+        /* In-app Inline Diagnostic Warning Panels */
+        .error-panel {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 77, 148, 0.05);
+            border: 1px solid rgba(255, 77, 148, 0.2);
+            border-radius: 16px;
+            text-align: left;
+        }
+        .error-panel h5 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff4d94;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .error-panel p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -244,10 +266,12 @@
     <main style="padding: 40px 0;">
         <div class="container">
             
+            <!-- Structural Back Button Link Matrix Line -->
             <a href="tools.html" class="back-link">
                 <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
             </a>
 
+            <!-- CORE TELEMETRY ENGINE -->
             <section style="padding: 0; text-align: center;">
                 <div class="section-title">
                     <h2>PAPERMC BUILD ENGINE</h2>
@@ -263,12 +287,21 @@
                         </button>
                     </div>
 
+                    <!-- LOADING STATE PANEL -->
                     <div id="loadingIndicator" class="loader">
                         <i class="fa-solid fa-atom fa-spin"></i> Synchronizing Core Systems Protocol...
                     </div>
 
+                    <!-- REPLACED MODAL WITH THIS SECURE INLINE DIAGNOSTIC SYSTEM -->
+                    <div id="errorPanel" class="error-panel">
+                        <h5><i class="fa-solid fa-triangle-exclamation"></i> HANDSHAKE TERMINATED</h5>
+                        <p id="errorText">The selected version index doesn't host deployment builds or is currently experimental. Try an established milestone release line.</p>
+                    </div>
+
+                    <!-- INJECTED DATA INTERFACE -->
                     <div id="telemetryResult" class="status-display">
                         
+                        <!-- Full Telemetry Array Block Elements -->
                         <div class="telemetry-grid">
                             <div class="telemetry-box">
                                 <span>Project Vector</span>
@@ -284,6 +317,7 @@
                             </div>
                         </div>
 
+                        <!-- Direct Download Interface Module -->
                         <div class="download-panel">
                             <div>
                                 <h3 id="targetJarName" style="font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff; word-break: break-all;">paper-core.jar</h3>
@@ -294,6 +328,7 @@
                             </a>
                         </div>
 
+                        <!-- Commit Log Section Row -->
                         <h4 style="margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Build Architecture Commit Log</h4>
                         <div id="commitChangelog" class="changelog-container"></div>
 
@@ -313,34 +348,50 @@
             let versionInput = document.getElementById('mcVersion').value.trim();
             const loader = document.getElementById('loadingIndicator');
             const resultBox = document.getElementById('telemetryResult');
+            const errorPanel = document.getElementById('errorPanel');
 
             loader.style.display = 'block';
+            errorPanel.style.display = 'none';
             if(!isAutoLoad) resultBox.style.display = 'none';
 
             try {
-                // Step 1: Default to latest if blank
+                // Step 1: Query global project versions mapping tracking index array
+                const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
+                const projectData = await projectRes.json();
+                const availableVersions = projectData.versions;
+
+                // Step 2: Loop configuration if search target is left empty
                 if (!versionInput) {
-                    const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
-                    const projectData = await projectRes.json();
-                    versionInput = projectData.versions[projectData.versions.length - 1];
-                    document.getElementById('mcVersion').value = versionInput;
+                    // Start backwards searching for the newest stable line with actual builds available
+                    for (let i = availableVersions.length - 1; i >= 0; i--) {
+                        let tempVersion = availableVersions[i];
+                        let verifyRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${tempVersion}`);
+                        if (verifyRes.ok) {
+                            let verifyData = await verifyRes.json();
+                            if (verifyData.builds && verifyData.builds.length > 0) {
+                                versionInput = tempVersion;
+                                document.getElementById('mcVersion').value = versionInput;
+                                break;
+                            }
+                        }
+                    }
                 }
 
-                // Step 2: Fetch specific builds registry
+                // Step 3: Fetch builds registry container for targeted input release
                 const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}`);
                 if (!versionRes.ok) {
-                    throw new Error('Version matrix endpoint returned invalid structure.');
+                    throw new Error(`The target version vector '${versionInput}' returned zero valid structural builds inside PaperMC's distribution manifest.`);
                 }
                 
                 const versionData = await versionRes.json();
                 
                 if (!versionData.builds || versionData.builds.length === 0) {
-                    throw new Error('No builds found for this experimental target configuration.');
+                    throw new Error(`No available infrastructure binaries found mapped to version configuration '${versionInput}'.`);
                 }
                 
                 const latestBuild = versionData.builds[versionData.builds.length - 1];
 
-                // Step 3: Pull unique build payload details
+                // Step 4: Pull build runtime configuration metrics
                 const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}`);
                 const buildData = await buildRes.json();
 
@@ -356,11 +407,11 @@
                 document.getElementById('targetJarName').innerText = applicationJarName;
                 document.getElementById('targetHash').innerText = `SHA256: ${applicationHash}`;
 
-                // Inject Download URL Target
+                // Inject secure official directly mapped binary mirror distribution node link
                 const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}/downloads/${applicationJarName}`;
                 document.getElementById('directDownloadLink').href = absoluteDownloadUrl;
 
-                // Process Commit logs cleanly
+                // Process internal changelog data objects
                 const changelogBox = document.getElementById('commitChangelog');
                 if (buildData.changes && buildData.changes.length > 0) {
                     let logs = '';
@@ -374,12 +425,16 @@
 
             } catch (err) {
                 loader.style.display = 'none';
-                alert('Handshake Error: Failed to fetch metadata for the specified Minecraft version. It might be unreleased or unsupported.');
+                resultBox.style.display = 'none';
+                
+                // Print specific failure diagnostics into the system card instead of alert blocks
+                document.getElementById('errorText').innerText = err.message || 'Vector mapping exception over target nodes network infrastructure.';
+                errorPanel.style.display = 'block';
                 console.error(err);
             }
         }
 
-        // Particle Background System Matching exactly
+        /* Particle Background System Matching exactly */
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
