@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
+        /* Modern Structural Layout Definitions */
         .checker-card {
             max-width: 950px;
             margin: 0 auto;
@@ -25,6 +26,7 @@
             margin: 25px 0;
             flex-wrap: wrap;
         }
+        
         .server-input {
             padding: 16px 22px;
             background: rgba(255, 255, 255, 0.03);
@@ -46,6 +48,7 @@
             background: rgba(27, 231, 255, 0.04);
             box-shadow: 0 0 15px rgba(27, 231, 255, 0.2);
         }
+        
         .btn-check {
             background: linear-gradient(135deg, #6e6bff, #1be7ff);
             border: none;
@@ -64,10 +67,12 @@
             justify-content: center;
             gap: 8px;
         }
+        
         .btn-check:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 20px rgba(27, 231, 255, 0.5);
         }
+        
         .status-display {
             margin-top: 35px;
             display: none;
@@ -82,6 +87,7 @@
             gap: 16px;
             margin-top: 20px;
         }
+        
         .telemetry-box {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -90,6 +96,7 @@
             position: relative;
             overflow: hidden;
         }
+        
         .telemetry-box::before {
             content: '';
             position: absolute;
@@ -107,6 +114,7 @@
             letter-spacing: 1px;
             font-weight: 600;
         }
+        
         .telemetry-box h4 {
             font-family: 'Orbitron', sans-serif;
             font-size: 19px;
@@ -146,6 +154,7 @@
             gap: 8px;
             text-decoration: none;
         }
+        
         .btn-download:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 20px rgba(27, 231, 255, 0.5);
@@ -184,12 +193,14 @@
             border-radius: 16px;
             text-align: left;
         }
+        
         .error-panel h5 {
             font-family: 'Orbitron', sans-serif;
             color: #ff4d94;
             font-size: 16px;
             margin-bottom: 4px;
         }
+        
         .error-panel p {
             color: rgba(255, 255, 255, 0.7);
             font-size: 14px;
@@ -208,6 +219,7 @@
             letter-spacing: 0.5px;
             text-decoration: none;
         }
+        
         .back-link:hover {
             color: #1be7ff;
             transform: translateX(-3px);
@@ -251,7 +263,7 @@
                     
                     <div class="input-group">
                         <input type="text" id="mcVersion" class="server-input" placeholder="Minecraft Version (e.g. 1.21.1 or leave blank for newest)" autocomplete="off">
-                        <button onclick="fetchPaperTelemetry(false)" class="btn-check">
+                        <button onclick="executeTelemetryQuery(false)" class="btn-check">
                             <i class="fa-solid fa-satellite-dish"></i> Query Engine
                         </button>
                     </div>
@@ -303,114 +315,129 @@
     </main>
 
     <script>
+        // Start Engine Automatically on Execution
         window.addEventListener('DOMContentLoaded', () => {
-            fetchPaperTelemetry(true);
+            executeTelemetryQuery(true);
         });
 
-        async function fetchPaperTelemetry(isAutoLoad = false) {
-            let versionInput = document.getElementById('mcVersion').value.trim();
+        async function executeTelemetryQuery(isWarmupRun = false) {
+            // Clean user sanitization step
+            let rawInput = document.getElementById('mcVersion').value;
+            let sanitizedVersion = rawInput ? rawInput.replace(/\s+/g, '').trim() : '';
+            
             const loader = document.getElementById('loadingIndicator');
-            const resultBox = document.getElementById('telemetryResult');
-            const errorPanel = document.getElementById('errorPanel');
+            const dashboard = document.getElementById('telemetryResult');
+            const alertPanel = document.getElementById('errorPanel');
 
             loader.style.display = 'block';
-            errorPanel.style.display = 'none';
-            if(!isAutoLoad) resultBox.style.display = 'none';
+            alertPanel.style.display = 'none';
+            if (!isWarmupRun) dashboard.style.display = 'none';
 
             try {
-                const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
-                if (!projectRes.ok) throw new Error('Global project index repository unresolvable.');
+                // Layer 1: Establish repository index vector
+                const projectResponse = await fetch('https://api.papermc.io/v2/projects/paper');
+                if (!projectResponse.ok) throw new Error('Global repository index sync failed.');
                 
-                const projectData = await projectRes.json();
-                const availableVersions = projectData?.versions || [];
+                const projectStructure = await projectResponse.json();
+                const historicalTrack = projectStructure?.versions || [];
 
-                if (availableVersions.length === 0) {
-                    throw new Error('PaperMC project registry returned empty core dataset mappings.');
+                if (historicalTrack.length === 0) {
+                    throw new Error('Remote platform returned an unreadable metadata tree structure.');
                 }
 
-                if (!versionInput) {
-                    let fallbackResolved = false;
-                    for (let i = availableVersions.length - 1; i >= 0; i--) {
-                        let tempVersion = availableVersions[i];
+                // Layer 2: Automatic fallback selector tracking backwards for stable targets
+                if (!sanitizedVersion) {
+                    let operationalTargetFound = false;
+                    for (let idx = historicalTrack.length - 1; idx >= 0; idx--) {
+                        let trackingCursor = historicalTrack[idx];
                         try {
-                            let verifyRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${tempVersion}`);
-                            if (verifyRes.ok) {
-                                let verifyData = await verifyRes.json();
-                                if (verifyData?.builds && verifyData.builds.length > 0) {
-                                    versionInput = tempVersion;
-                                    document.getElementById('mcVersion').value = versionInput;
-                                    fallbackResolved = true;
+                            let trackVerify = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${trackingCursor}`);
+                            if (trackVerify.ok) {
+                                let trackData = await trackVerify.json();
+                                if (trackData?.builds && trackData.builds.length > 0) {
+                                    sanitizedVersion = trackingCursor;
+                                    document.getElementById('mcVersion').value = sanitizedVersion;
+                                    operationalTargetFound = true;
                                     break;
                                 }
                             }
-                        } catch(e) { continue; }
+                        } catch (nestedErr) { continue; }
                     }
-                    if (!fallbackResolved) versionInput = availableVersions[availableVersions.length - 1];
+                    if (!operationalTargetFound) sanitizedVersion = historicalTrack[historicalTrack.length - 1];
                 }
 
-                const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}`);
-                if (!versionRes.ok) {
-                    throw new Error(`Target track '${versionInput}' does not contain an active binary on the repository manifests.`);
+                // Layer 3: Synchronize version manifest nodes safely
+                const streamResponse = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(sanitizedVersion)}`);
+                if (!streamResponse.ok) {
+                    throw new Error(`The specified track version line "${sanitizedVersion}" cannot be located.`);
                 }
                 
-                const versionData = await versionRes.json();
-                if (!versionData?.builds || versionData.builds.length === 0) {
-                    throw new Error(`Version '${versionInput}' is currently an unreleased or unsupported build path.`);
+                const streamManifest = await streamResponse.json();
+                const availableBuildsArray = streamManifest?.builds || [];
+
+                if (availableBuildsArray.length === 0) {
+                    throw new Error(`The version track "${sanitizedVersion}" has no stable binary releases built yet.`);
                 }
                 
-                const latestBuild = versionData.builds[versionData.builds.length - 1];
+                const definitiveLatestBuild = availableBuildsArray[availableBuildsArray.length - 1];
 
-                const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}`);
-                if (!buildRes.ok) throw new Error('Build property synchronization matrix interrupted.');
+                // Layer 4: Fetch definitive single production compilation target data
+                const buildMetaResponse = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(sanitizedVersion)}/builds/${definitiveLatestBuild}`);
+                if (!buildMetaResponse.ok) throw new Error('Binary distribution packaging signature extraction dropped.');
                 
-                const buildData = await buildRes.json();
+                const buildPayload = await buildMetaResponse.json();
 
+                // Inject variables safely into UI nodes
                 loader.style.display = 'none';
-                resultBox.style.display = 'block';
+                dashboard.style.display = 'block';
 
-                document.getElementById('nodeVersion').innerText = versionInput;
-                document.getElementById('nodeBuild').innerText = `#${latestBuild}`;
+                document.getElementById('nodeVersion').innerText = sanitizedVersion;
+                document.getElementById('nodeBuild').innerText = `#${definitiveLatestBuild}`;
                 
-                const applicationJarName = buildData?.downloads?.application?.name || 'paper.jar';
-                const applicationHash = buildData?.downloads?.application?.sha256 || 'Unavailable';
+                const targetBinaryFilename = buildPayload?.downloads?.application?.name || 'paper.jar';
+                const cryptographicHash = buildPayload?.downloads?.application?.sha256 || 'Hash Index Signature Corrupt';
                 
-                document.getElementById('targetJarName').innerText = applicationJarName;
-                document.getElementById('targetHash').innerText = `SHA256: ${applicationHash}`;
+                document.getElementById('targetJarName').innerText = targetBinaryFilename;
+                document.getElementById('targetHash').innerText = `SHA256: ${cryptographicHash}`;
 
-                const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}/downloads/${applicationJarName}`;
-                document.getElementById('directDownloadLink').href = absoluteDownloadUrl;
+                // Set secure, hot-linked download path URL
+                document.getElementById('directDownloadLink').href = `https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(sanitizedVersion)}/builds/${definitiveLatestBuild}/downloads/${targetBinaryFilename}`;
 
-                const changelogBox = document.getElementById('commitChangelog');
-                if (buildData?.changes && buildData.changes.length > 0) {
-                    let logs = '';
-                    buildData.changes.forEach(change => {
-                        if(change.commit && change.summary) {
-                            logs += `[Commit: ${change.commit.substring(0, 7)}] - ${change.summary}\n`;
+                // Parse out active commit log segments
+                const changelogViewNode = document.getElementById('commitChangelog');
+                const patchNotes = buildPayload?.changes || [];
+                
+                if (patchNotes.length > 0) {
+                    let consolidatedText = '';
+                    patchNotes.forEach(patch => {
+                        if (patch.commit && patch.summary) {
+                            consolidatedText += `[Hash: ${patch.commit.substring(0, 7)}] - ${patch.summary}\n`;
                         }
                     });
-                    changelogBox.innerText = logs || 'Standard minor system code optimizations executed.';
+                    changelogViewNode.innerText = consolidatedText || 'Standard framework system optimization modifications applied.';
                 } else {
-                    changelogBox.innerText = 'Synchronized structure complete: This version contains internal optimizations or standard upstream binary merges.';
+                    changelogViewNode.innerText = 'Distribution package initialized seamlessly with baseline repository upgrades.';
                 }
 
-            } catch (err) {
+            } catch (runtimeException) {
                 loader.style.display = 'none';
-                resultBox.style.display = 'none';
-                document.getElementById('errorText').innerText = err.message || 'Vector mapping exception over target nodes network infrastructure.';
-                errorPanel.style.display = 'block';
-                console.error(err);
+                dashboard.style.display = 'none';
+                document.getElementById('errorText').innerText = runtimeException.message || 'Fatal communication loop error occurred.';
+                alertPanel.style.display = 'block';
+                console.error(runtimeException);
             }
         }
 
+        /* Continuous Dynamic Animation Particle Field */
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         resize();
         window.addEventListener("resize", resize);
 
-        const particles = [];
-        for (let i = 0; i < 180; i++) {
-            particles.push({
+        const particleStorage = [];
+        for (let idx = 0; idx < 180; idx++) {
+            particleStorage.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 r: Math.random() * 2 + 0.6,
@@ -419,24 +446,24 @@
             });
         }
 
-        function animate() {
+        function cycleEngineFrame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.dx; p.y += p.dy;
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
+            particleStorage.forEach(part => {
+                part.x += part.dx; part.y += part.dy;
+                if (part.x < 0) part.x = canvas.width;
+                if (part.x > canvas.width) part.x = 0;
+                if (part.y < 0) part.y = canvas.height;
+                if (part.y > canvas.height) part.y = 0;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.arc(part.x, part.y, part.r, 0, Math.PI * 2);
                 ctx.fillStyle = "#26F4FF";
                 ctx.shadowColor = "#26F4FF";
                 ctx.shadowBlur = 12;
                 ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(cycleEngineFrame);
         }
-        animate();
+        cycleEngineFrame();
     </script>
     <script src="protection.js"></script>
 </body>
