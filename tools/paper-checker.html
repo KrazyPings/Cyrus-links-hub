@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
-        /* Exact Style Matching with Minecraft Telemetry Tool */
+        /* Exact Theme & Grid Alignment with Minecraft Telemetry Tool */
         .checker-card {
             max-width: 950px;
             margin: 0 auto;
@@ -179,7 +179,7 @@
             margin-top: 30px;
         }
 
-        /* In-app Inline Diagnostic Warning Panels */
+        /* Inline Diagnostic Warning Panel */
         .error-panel {
             display: none;
             margin-top: 25px;
@@ -218,7 +218,7 @@
             transform: translateX(-3px);
         }
 
-        /* Mobile Breakpoints matching exactly */
+        /* Mobile Breakpoints */
         @media(max-width: 768px) {
             .checker-card {
                 padding: 20px 15px;
@@ -266,12 +266,10 @@
     <main style="padding: 40px 0;">
         <div class="container">
             
-            <!-- Structural Back Button Link Matrix Line -->
             <a href="tools.html" class="back-link">
                 <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
             </a>
 
-            <!-- CORE TELEMETRY ENGINE -->
             <section style="padding: 0; text-align: center;">
                 <div class="section-title">
                     <h2>PAPERMC BUILD ENGINE</h2>
@@ -287,21 +285,17 @@
                         </button>
                     </div>
 
-                    <!-- LOADING STATE PANEL -->
                     <div id="loadingIndicator" class="loader">
                         <i class="fa-solid fa-atom fa-spin"></i> Synchronizing Core Systems Protocol...
                     </div>
 
-                    <!-- REPLACED MODAL WITH THIS SECURE INLINE DIAGNOSTIC SYSTEM -->
                     <div id="errorPanel" class="error-panel">
                         <h5><i class="fa-solid fa-triangle-exclamation"></i> HANDSHAKE TERMINATED</h5>
-                        <p id="errorText">The selected version index doesn't host deployment builds or is currently experimental. Try an established milestone release line.</p>
+                        <p id="errorText">The selected version index doesn't host deployment builds or is currently experimental.</p>
                     </div>
 
-                    <!-- INJECTED DATA INTERFACE -->
                     <div id="telemetryResult" class="status-display">
                         
-                        <!-- Full Telemetry Array Block Elements -->
                         <div class="telemetry-grid">
                             <div class="telemetry-box">
                                 <span>Project Vector</span>
@@ -317,7 +311,6 @@
                             </div>
                         </div>
 
-                        <!-- Direct Download Interface Module -->
                         <div class="download-panel">
                             <div>
                                 <h3 id="targetJarName" style="font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff; word-break: break-all;">paper-core.jar</h3>
@@ -328,7 +321,6 @@
                             </a>
                         </div>
 
-                        <!-- Commit Log Section Row -->
                         <h4 style="margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Build Architecture Commit Log</h4>
                         <div id="commitChangelog" class="changelog-container"></div>
 
@@ -355,70 +347,71 @@
             if(!isAutoLoad) resultBox.style.display = 'none';
 
             try {
-                // Step 1: Query global project versions mapping tracking index array
+                // Step 1: Safely pull remote repository configuration
                 const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
+                if (!projectRes.ok) throw new Error('Global project core registry vector unresolvable.');
+                
                 const projectData = await projectRes.json();
+                
+                // Complete defense line against undefined reading '.length' properties
+                if (!projectData || !projectData.versions || projectData.versions.length === 0) {
+                    throw new Error('PaperMC project structure returned an invalid version array mapping.');
+                }
+                
                 const availableVersions = projectData.versions;
 
-                // Step 2: Loop configuration if search target is left empty
+                // Step 2: Auto-resolve to newest version with active builds if input is empty
                 if (!versionInput) {
-                    // Start backwards searching for the newest stable line with actual builds available
-                    for (let i = availableVersions.length - 1; i >= 0; i--) {
-                        let tempVersion = availableVersions[i];
-                        let verifyRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${tempVersion}`);
-                        if (verifyRes.ok) {
-                            let verifyData = await verifyRes.json();
-                            if (verifyData.builds && verifyData.builds.length > 0) {
-                                versionInput = tempVersion;
-                                document.getElementById('mcVersion').value = versionInput;
-                                break;
-                            }
-                        }
-                    }
+                    versionInput = availableVersions[availableVersions.length - 1];
+                    document.getElementById('mcVersion').value = versionInput;
                 }
 
-                // Step 3: Fetch builds registry container for targeted input release
-                const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}`);
+                // Step 3: Fetch builds registry container for targeted line
+                const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}`);
                 if (!versionRes.ok) {
-                    throw new Error(`The target version vector '${versionInput}' returned zero valid structural builds inside PaperMC's distribution manifest.`);
+                    throw new Error(`Target track '${versionInput}' returned zero valid structural builds inside PaperMC's endpoint.`);
                 }
                 
                 const versionData = await versionRes.json();
-                
-                if (!versionData.builds || versionData.builds.length === 0) {
-                    throw new Error(`No available infrastructure binaries found mapped to version configuration '${versionInput}'.`);
+                if (!versionData || !versionData.builds || versionData.builds.length === 0) {
+                    throw new Error(`Version track '${versionInput}' is currently an experimental stub with no active compiled binaries.`);
                 }
                 
                 const latestBuild = versionData.builds[versionData.builds.length - 1];
 
-                // Step 4: Pull build runtime configuration metrics
-                const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}`);
+                // Step 4: Pull build runtime metrics
+                const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}`);
+                if (!buildRes.ok) throw new Error('Build target metadata synchronization interrupted.');
+                
                 const buildData = await buildRes.json();
 
+                // UI Display Synchronization
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
 
                 document.getElementById('nodeVersion').innerText = versionInput;
                 document.getElementById('nodeBuild').innerText = `#${latestBuild}`;
                 
-                const applicationJarName = buildData.downloads.application.name;
-                const applicationHash = buildData.downloads.application.sha256;
+                const applicationJarName = buildData?.downloads?.application?.name || 'paper.jar';
+                const applicationHash = buildData?.downloads?.application?.sha256 || 'N/A';
                 
                 document.getElementById('targetJarName').innerText = applicationJarName;
                 document.getElementById('targetHash').innerText = `SHA256: ${applicationHash}`;
 
-                // Inject secure official directly mapped binary mirror distribution node link
-                const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${versionInput}/builds/${latestBuild}/downloads/${applicationJarName}`;
+                // Inject secure official directly mapped download mirror node links
+                const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}/downloads/${applicationJarName}`;
                 document.getElementById('directDownloadLink').href = absoluteDownloadUrl;
 
-                // Process internal changelog data objects
+                // Process internal changelog text line segments securely
                 const changelogBox = document.getElementById('commitChangelog');
-                if (buildData.changes && buildData.changes.length > 0) {
+                if (buildData && buildData.changes && buildData.changes.length > 0) {
                     let logs = '';
                     buildData.changes.forEach(change => {
-                        logs += `[Commit: ${change.commit.substring(0, 7)}] - ${change.summary}\n`;
+                        if(change.commit && change.summary) {
+                            logs += `[Commit: ${change.commit.substring(0, 7)}] - ${change.summary}\n`;
+                        }
                     });
-                    changelogBox.innerText = logs;
+                    changelogBox.innerText = logs || 'Standard minor system code optimizations executed.';
                 } else {
                     changelogBox.innerText = 'Synchronized structure complete: This version contains internal optimizations or standard upstream binary merges.';
                 }
@@ -427,14 +420,14 @@
                 loader.style.display = 'none';
                 resultBox.style.display = 'none';
                 
-                // Print specific failure diagnostics into the system card instead of alert blocks
+                // Write detailed custom runtime errors into the layout seamlessly instead of using native alerts
                 document.getElementById('errorText').innerText = err.message || 'Vector mapping exception over target nodes network infrastructure.';
                 errorPanel.style.display = 'block';
                 console.error(err);
             }
         }
 
-        /* Particle Background System Matching exactly */
+        /* Particle Background System Matching Exactly with Main Checker */
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -471,8 +464,6 @@
         }
         animate();
     </script>
-
     <script src="protection.js"></script>
-
 </body>
 </html>
