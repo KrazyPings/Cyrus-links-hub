@@ -13,14 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
-        /* Exact Theme & Grid Alignment with Minecraft Telemetry Tool */
         .checker-card {
             max-width: 950px;
             margin: 0 auto;
             padding: 40px;
         }
 
-        /* Responsive Input Wrapper Group */
         .input-group {
             display: flex;
             gap: 12px;
@@ -78,7 +76,6 @@
             text-align: left;
         }
         
-        /* Matching Telemetry Matrix Layout */
         .telemetry-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -118,7 +115,6 @@
             word-break: break-all;
         }
 
-        /* Download Panel matching Server Header architecture */
         .download-panel {
             display: flex;
             align-items: center;
@@ -179,7 +175,6 @@
             margin-top: 30px;
         }
 
-        /* Inline Diagnostic Warning Panel */
         .error-panel {
             display: none;
             margin-top: 25px;
@@ -218,39 +213,15 @@
             transform: translateX(-3px);
         }
 
-        /* Mobile Breakpoints */
         @media(max-width: 768px) {
-            .checker-card {
-                padding: 20px 15px;
-            }
-            .input-group {
-                flex-direction: column;
-                gap: 10px;
-            }
-            #mcVersion, .btn-check {
-                flex: none;
-                width: 100%;
-                text-align: left;
-            }
-            .btn-check {
-                justify-content: center;
-                padding: 14px 20px;
-            }
-            .download-panel {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px;
-            }
-            .btn-download {
-                width: 100%;
-                justify-content: center;
-            }
-            .telemetry-grid {
-                grid-template-columns: 1fr;
-            }
-            .telemetry-box h4 {
-                font-size: 17px;
-            }
+            .checker-card { padding: 20px 15px; }
+            .input-group { flex-direction: column; gap: 10px; }
+            #mcVersion, .btn-check { flex: none; width: 100%; text-align: left; }
+            .btn-check { justify-content: center; padding: 14px 20px; }
+            .download-panel { flex-direction: column; align-items: flex-start; padding: 15px; }
+            .btn-download { width: 100%; justify-content: center; }
+            .telemetry-grid { grid-template-columns: 1fr; }
+            .telemetry-box h4 { font-size: 17px; }
         }
     </style>
 </head>
@@ -280,7 +251,7 @@
                     
                     <div class="input-group">
                         <input type="text" id="mcVersion" class="server-input" placeholder="Minecraft Version (e.g. 1.21.1 or leave blank for newest)" autocomplete="off">
-                        <button onclick="fetchPaperTelemetry()" class="btn-check">
+                        <button onclick="fetchPaperTelemetry(false)" class="btn-check">
                             <i class="fa-solid fa-satellite-dish"></i> Query Engine
                         </button>
                     </div>
@@ -347,45 +318,56 @@
             if(!isAutoLoad) resultBox.style.display = 'none';
 
             try {
-                // Step 1: Safely pull remote repository configuration
                 const projectRes = await fetch('https://api.papermc.io/v2/projects/paper');
-                if (!projectRes.ok) throw new Error('Global project core registry vector unresolvable.');
+                if (!projectRes.ok) throw new Error('Global project index repository unresolvable.');
                 
                 const projectData = await projectRes.json();
-                
-                // Complete defense line against undefined reading '.length' properties
-                if (!projectData || !projectData.versions || projectData.versions.length === 0) {
-                    throw new Error('PaperMC project structure returned an invalid version array mapping.');
-                }
-                
-                const availableVersions = projectData.versions;
+                const availableVersions = projectData?.versions || [];
 
-                // Step 2: Auto-resolve to newest version with active builds if input is empty
+                if (availableVersions.length === 0) {
+                    throw new Error('PaperMC project registry returned empty core dataset mappings.');
+                }
+
+                // Auto-resolve when form input is empty
                 if (!versionInput) {
-                    versionInput = availableVersions[availableVersions.length - 1];
-                    document.getElementById('mcVersion').value = versionInput;
+                    let fallbackResolved = false;
+                    // Scan backwards through stable trees to find an operational live build stream
+                    for (let i = availableVersions.length - 1; i >= 0; i--) {
+                        let tempVersion = availableVersions[i];
+                        try {
+                            let verifyRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${tempVersion}`);
+                            if (verifyRes.ok) {
+                                let verifyData = await verifyRes.json();
+                                if (verifyData?.builds && verifyData.builds.length > 0) {
+                                    versionInput = tempVersion;
+                                    document.getElementById('mcVersion').value = versionInput;
+                                    fallbackResolved = true;
+                                    break;
+                                }
+                            }
+                        } catch(e) { continue; }
+                    }
+                    if (!fallbackResolved) versionInput = availableVersions[availableVersions.length - 1];
                 }
 
-                // Step 3: Fetch builds registry container for targeted line
+                // Query targeted profile details
                 const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}`);
                 if (!versionRes.ok) {
-                    throw new Error(`Target track '${versionInput}' returned zero valid structural builds inside PaperMC's endpoint.`);
+                    throw new Error(`Target track '${versionInput}' does not contain an active binary on the repository manifests.`);
                 }
                 
                 const versionData = await versionRes.json();
-                if (!versionData || !versionData.builds || versionData.builds.length === 0) {
-                    throw new Error(`Version track '${versionInput}' is currently an experimental stub with no active compiled binaries.`);
+                if (!versionData?.builds || versionData.builds.length === 0) {
+                    throw new Error(`Version '${versionInput}' is currently an unreleased or unsupported build path.`);
                 }
                 
                 const latestBuild = versionData.builds[versionData.builds.length - 1];
 
-                // Step 4: Pull build runtime metrics
                 const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}`);
-                if (!buildRes.ok) throw new Error('Build target metadata synchronization interrupted.');
+                if (!buildRes.ok) throw new Error('Build property handshake matrix interrupted.');
                 
                 const buildData = await buildRes.json();
 
-                // UI Display Synchronization
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
 
@@ -393,18 +375,16 @@
                 document.getElementById('nodeBuild').innerText = `#${latestBuild}`;
                 
                 const applicationJarName = buildData?.downloads?.application?.name || 'paper.jar';
-                const applicationHash = buildData?.downloads?.application?.sha256 || 'N/A';
+                const applicationHash = buildData?.downloads?.application?.sha256 || 'Unavailable';
                 
                 document.getElementById('targetJarName').innerText = applicationJarName;
                 document.getElementById('targetHash').innerText = `SHA256: ${applicationHash}`;
 
-                // Inject secure official directly mapped download mirror node links
                 const absoluteDownloadUrl = `https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}/downloads/${applicationJarName}`;
                 document.getElementById('directDownloadLink').href = absoluteDownloadUrl;
 
-                // Process internal changelog text line segments securely
                 const changelogBox = document.getElementById('commitChangelog');
-                if (buildData && buildData.changes && buildData.changes.length > 0) {
+                if (buildData?.changes && buildData.changes.length > 0) {
                     let logs = '';
                     buildData.changes.forEach(change => {
                         if(change.commit && change.summary) {
@@ -419,15 +399,13 @@
             } catch (err) {
                 loader.style.display = 'none';
                 resultBox.style.display = 'none';
-                
-                // Write detailed custom runtime errors into the layout seamlessly instead of using native alerts
                 document.getElementById('errorText').innerText = err.message || 'Vector mapping exception over target nodes network infrastructure.';
                 errorPanel.style.display = 'block';
                 console.error(err);
             }
         }
 
-        /* Particle Background System Matching Exactly with Main Checker */
+        /* Particle Background Engine Core */
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
