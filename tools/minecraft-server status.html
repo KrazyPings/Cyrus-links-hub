@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyrusLinksHub | Real-time Minecraft Server Checker</title>
-    <meta name="description" content="Check live Minecraft server status, player counts, versions, clean MOTDs, and icons with our real-time tracker tool.">
+    <title>CyrusLinksHub | Advanced Cross-Platform Server Telemetry Checker</title>
+    <meta name="description" content="Professional real-time Minecraft Java & Bedrock server status checking suite with complete protocol telemetry maps.">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,22 +13,53 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <style>
-        /* Tool Specific Layout Polishes */
+        /* Pro-Tier Telemetry Specific Dashboard Polishes */
         .checker-card {
-            max-width: 750px;
+            max-width: 950px;
             margin: 0 auto;
-            padding: 35px;
+            padding: 40px;
         }
+        
+        /* Platform Toggle Chips */
+        .platform-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .platform-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+        }
+        .platform-btn.active {
+            background: linear-gradient(135deg, #6e6bff, #1be7ff);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(27, 231, 255, 0.3);
+        }
+
+        /* Combined Input Matrix */
         .input-group {
             display: flex;
             gap: 12px;
             margin: 25px 0;
         }
         .server-input {
-            flex: 1;
-            padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
@@ -37,16 +68,19 @@
             outline: none;
             transition: 0.3s;
         }
+        #serverIp { flex: 2; }
+        #serverPort { flex: 0.5; text-align: center; }
+        
         .server-input:focus {
             border-color: #1be7ff;
-            background: rgba(27, 231, 255, 0.05);
+            background: rgba(27, 231, 255, 0.04);
             box-shadow: 0 0 15px rgba(27, 231, 255, 0.2);
         }
         .btn-check {
             background: linear-gradient(135deg, #6e6bff, #1be7ff);
             border: none;
             color: white;
-            padding: 0 25px;
+            padding: 0 30px;
             border-radius: 12px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
@@ -64,90 +98,158 @@
             box-shadow: 0 0 20px rgba(27, 231, 255, 0.5);
         }
         .status-display {
-            margin-top: 30px;
+            margin-top: 35px;
             display: none;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 25px;
+            padding-top: 30px;
             text-align: left;
         }
         .server-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
         .server-icon {
             width: 64px;
             height: 64px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .badge-status {
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-weight: 700;
             font-family: 'Orbitron', sans-serif;
             font-size: 12px;
             text-transform: uppercase;
+            letter-spacing: 1px;
             display: inline-block;
         }
-        .online { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.3); }
-        .offline { background: rgba(255, 77, 148, 0.15); color: #ff4d94; border: 1px solid rgba(255, 77, 148, 0.3); }
+        .online { background: rgba(0, 255, 136, 0.12); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.25); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
+        .offline { background: rgba(255, 77, 148, 0.12); color: #ff4d94; border: 1px solid rgba(255, 77, 148, 0.25); }
         
-        .info-grid {
+        /* Advanced Metrics Grid Layout */
+        .telemetry-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
             margin-top: 20px;
         }
-        .info-box {
+        .telemetry-box {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 18px;
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
         }
-        .info-box span {
+        .telemetry-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 100%;
+            background: #1be7ff;
+        }
+        .telemetry-box.purple::before { background: #6e6bff; }
+        .telemetry-box.pink::before { background: #ff4d94; }
+        
+        .telemetry-box span {
             display: block;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
-        .info-box h4 {
+        .telemetry-box h4 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            margin-top: 5px;
+            font-size: 19px;
+            margin-top: 6px;
             color: #fff;
         }
+        
         .motd-container {
-            background: #000;
-            padding: 15px;
-            border-radius: 10px;
+            background: #02040a;
+            padding: 20px;
+            border-radius: 12px;
             font-family: monospace;
             white-space: pre-wrap;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-top: 15px;
-            border-left: 3px solid #1be7ff;
+            border: 1px solid rgba(255,255,255,0.05);
             color: #fff;
+            font-size: 14px;
         }
+        
+        /* Dynamic Player Registry Section */
+        .player-registry {
+            margin-top: 25px;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 20px;
+        }
+        .player-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .player-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1be7ff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .player-tag img {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+        
         .loader {
             display: none;
-            font-size: 24px;
+            font-size: 22px;
+            font-family: 'Orbitron', sans-serif;
             color: #1be7ff;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .back-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 600;
             transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
         }
         .back-link:hover {
             color: #1be7ff;
+            transform: translateX(-3px);
         }
     </style>
 </head>
@@ -163,57 +265,95 @@
     <main style="padding: 60px 0;">
         <div class="container">
             
+            <!-- Direct Back Button Layer -->
             <a href="tools.html" class="back-link">
                 <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
             </a>
 
+            <!-- CORE TELEMETRY ENGINE -->
             <section style="padding: 0; text-align: center;">
                 <div class="section-title">
-                    <h2>MINECRAFT SERVER STATUS</h2>
-                    <p>Retrieve authoritative, real-time response vectors, player metrics, network versions, and cleaner node maps.</p>
+                    <h2>MINECRAFT TELEMETRY SYSTEMS</h2>
+                    <p>Cross-platform real-time diagnostic engine tracking system configurations, port rules, and player metrics.</p>
                 </div>
 
                 <div class="glass-card checker-card">
-                    <h3>Enter Server Coordinates</h3>
-                    <p style="font-size: 14px; color: rgba(255,255,255,0.5);">Supports Java and Bedrock connection addresses (e.g., play.hypixel.net)</p>
+                    
+                    <!-- Platform Type Multi-Selectors -->
+                    <div class="platform-selector">
+                        <button type="button" id="typeJava" class="platform-btn active" onclick="setPlatform('java', 25565)">
+                            <i class="fa-brands fa-java"></i> Java Edition
+                        </button>
+                        <button type="button" id="typeBedrock" class="platform-btn" onclick="setPlatform('bedrock', 19132)">
+                            <i class="fa-solid fa-cubes"></i> Bedrock / PE
+                        </button>
+                    </div>
                     
                     <div class="input-group">
-                        <input type="text" id="serverIp" class="server-input" placeholder="IP Address or Domain..." autocomplete="off">
+                        <input type="text" id="serverIp" class="server-input" placeholder="Server Domain or IP Node (e.g. play.hypixel.net)" autocomplete="off">
+                        <input type="text" id="serverPort" class="server-input" value="25565" placeholder="Port" autocomplete="off">
                         <button onclick="queryServerStatus()" class="btn-check">
-                            <i class="fa-solid fa-radar"></i> Scan Node
+                            <i class="fa-solid fa-satellite-dish"></i> Query Node
                         </button>
                     </div>
 
+                    <!-- LOADING STATE PANEL -->
                     <div id="loadingIndicator" class="loader">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing Network Matrix...
+                        <i class="fa-solid fa-atom fa-spin"></i> Synchronizing Handshake Protocol...
                     </div>
 
+                    <!-- INJECTED DATA INTERFACE -->
                     <div id="statusResult" class="status-display">
+                        
                         <div class="server-header">
-                            <img id="srvIcon" class="server-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Server Icon">
-                            <div>
-                                <h3 id="srvHostname" style="font-family: 'Orbitron', sans-serif;">server.ip.node</h3>
-                                <div id="srvStatusBadge" class="badge-status online">Online</div>
+                            <div class="header-left">
+                                <img id="srvIcon" class="server-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Icon">
+                                <div>
+                                    <h3 id="srvHostname" style="font-family: 'Orbitron', sans-serif; font-size: 22px; color: #fff;">node.connection.path</h3>
+                                    <p id="srvEndpoints" style="font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 500; margin-top: 2px;">IP: -- | Port: --</p>
+                                </div>
+                            </div>
+                            <div id="srvStatusBadge" class="badge-status online">Active Vector</div>
+                        </div>
+
+                        <!-- Full Telemetry Array Block Elements -->
+                        <div class="telemetry-grid">
+                            <div class="telemetry-box">
+                                <span>Network Ping Delay</span>
+                                <h4 id="srvPing">0 ms</h4>
+                            </div>
+                            <div class="telemetry-box purple">
+                                <span>Load Metric Registry</span>
+                                <h4 id="srvPlayers">0 / 0</h4>
+                            </div>
+                            <div class="telemetry-box pink">
+                                <span>Software Engine</span>
+                                <h4 id="srvSoftware">Loading...</h4>
+                            </div>
+                            <div class="telemetry-box">
+                                <span>Game Version</span>
+                                <h4 id="srvVersion">--</h4>
+                            </div>
+                            <div class="telemetry-box purple">
+                                <span>Protocol Layer</span>
+                                <h4 id="srvProtocol">--</h4>
+                            </div>
+                            <div class="telemetry-box pink">
+                                <span>Platform Mode</span>
+                                <h4 id="srvMode">JAVA</h4>
                             </div>
                         </div>
 
-                        <div class="info-grid">
-                            <div class="info-box">
-                                <span>Core Game Engine</span>
-                                <h4 id="srvVersion">-</h4>
-                            </div>
-                            <div class="info-box">
-                                <span>Active Load Metrics</span>
-                                <h4 id="srvPlayers">-</h4>
-                            </div>
-                            <div class="info-box">
-                                <span>Routing Latency</span>
-                                <h4 id="srvPing">-</h4>
-                            </div>
-                        </div>
-
-                        <h4 style="margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.5); text-transform: uppercase;">Message of the Day (MOTD)</h4>
+                        <!-- MOTD Container Row -->
+                        <h4 style="margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Server Broadcast Header (MOTD)</h4>
                         <div id="srvMotd" class="motd-container"></div>
+
+                        <!-- Live Online Player Registry List Block -->
+                        <div id="playerSection" class="player-registry" style="display: none;">
+                            <h4 style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Live Online User Sample List</h4>
+                            <div id="playerListContainer" class="player-list"></div>
+                        </div>
+
                     </div>
 
                 </div>
@@ -222,75 +362,133 @@
     </main>
 
     <script>
+        let selectedPlatform = 'java';
+
         /**
-         * Real-time Authoritative Server Fetch Engine
+         * Dynamic selection of server architectures
+         */
+        function setPlatform(platform, defaultPort) {
+            selectedPlatform = platform;
+            document.getElementById('serverPort').value = defaultPort;
+            
+            // Handle active styling shifts
+            document.getElementById('typeJava').classList.toggle('active', platform === 'java');
+            document.getElementById('typeBedrock').classList.toggle('active', platform === 'bedrock');
+        }
+
+        /**
+         * Real-time Authoritative Cross-Platform Server Fetch Engine
          */
         async function queryServerStatus() {
             const ipInput = document.getElementById('serverIp').value.trim();
+            let portInput = document.getElementById('serverPort').value.trim();
             const loader = document.getElementById('loadingIndicator');
             const resultBox = document.getElementById('statusResult');
 
             if (!ipInput) {
-                alert('Please enter a valid Minecraft server address.');
+                alert('Please supply an operational address path.');
                 return;
             }
 
-            // Interface Reset Transitions
+            if (!portInput) {
+                portInput = selectedPlatform === 'java' ? '25565' : '19132';
+            }
+
             loader.style.display = 'block';
             resultBox.style.display = 'none';
 
             try {
-                // Fetch dynamic live metrics directly from a trusted public JSON wrapper mapping query protocols
-                const response = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(ipInput)}`);
+                // Route endpoints cleanly using the proper type configurations
+                const apiType = selectedPlatform === 'bedrock' ? 'bedrock' : '3';
+                const response = await fetch(`https://api.mcsrvstat.us/${apiType}/${encodeURIComponent(ipInput)}:${encodeURIComponent(portInput)}`);
                 const data = await response.json();
 
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
 
-                // Map Dynamic Properties
                 document.getElementById('srvHostname').innerText = data.hostname || ipInput;
+                document.getElementById('srvEndpoints').innerText = `IP: ${data.ip || 'Hidden'} | Port: ${data.port || portInput}`;
+                document.getElementById('srvMode').innerText = selectedPlatform.toUpperCase();
 
                 if (data.online) {
                     document.getElementById('srvStatusBadge').className = 'badge-status online';
-                    document.getElementById('srvStatusBadge').innerText = 'Online';
+                    document.getElementById('srvStatusBadge').innerText = 'Online Connection';
                     
-                    // Standard properties parsing setup
-                    document.getElementById('srvVersion').innerText = data.version || 'Unknown Java/Bedrock';
-                    document.getElementById('srvPlayers').innerText = `${data.players.online} / ${data.players.max}`;
-                    document.getElementById('srvPing').innerText = data.debug && data.debug.ping ? `${data.debug.ping} ms` : 'Verified Live';
-                    
-                    // Server Favicon mapping
-                    if (data.icon) {
-                        document.getElementById('srvIcon').src = data.icon;
+                    // Precise Ping Matrix Fallbacks
+                    if (data.debug && data.debug.ping) {
+                        document.getElementById('srvPing').innerText = `${data.debug.ping} ms`;
                     } else {
-                        document.getElementById('srvIcon').src = 'https://api.mcsrvstat.us/icon/' + ipInput;
+                        document.getElementById('srvPing').innerText = 'Optimal Sync';
                     }
 
-                    // Parse real text lines out of the server array
+                    // Version and protocol configurations
+                    document.getElementById('srvVersion').innerText = data.version || 'Universal Node';
+                    document.getElementById('srvProtocol').innerText = data.protocol && data.protocol.version ? `v${data.protocol.version}` : 'Standard Layer';
+                    
+                    // Capacity counts
+                    const currentPlayers = data.players ? data.players.online : 0;
+                    const maxPlayers = data.players ? data.players.max : 0;
+                    document.getElementById('srvPlayers').innerText = `${currentPlayers} / ${maxPlayers}`;
+
+                    // Extract systems details depending on architecture
+                    document.getElementById('srvSoftware').innerText = data.software || (selectedPlatform === 'java' ? 'Spigot/Paper Engine' : 'Bedrock Server');
+
+                    // Parse clean server broadcasting strings
                     if (data.motd && data.motd.clean) {
                         document.getElementById('srvMotd').innerText = data.motd.clean.join('\n');
                     } else {
-                        document.getElementById('srvMotd').innerText = 'No broadcast message configured.';
+                        document.getElementById('srvMotd').innerText = 'No broadcast text message array returned.';
                     }
+
+                    // Favicon mapping architecture (Bedrock does not support default favicons)
+                    if (selectedPlatform === 'java' && data.icon) {
+                        document.getElementById('srvIcon').src = data.icon;
+                    } else if (selectedPlatform === 'java') {
+                        document.getElementById('srvIcon').src = `https://api.mcsrvstat.us/icon/${encodeURIComponent(ipInput)}:${encodeURIComponent(portInput)}`;
+                    } else {
+                        // High resolution custom replacement asset placeholder for Bedrock editions
+                        document.getElementById('srvIcon').src = 'https://api.mcsrvstat.us/icon/pe';
+                    }
+
+                    // Real-time Live Online Player List Registry Mapping
+                    const playerContainer = document.getElementById('playerSection');
+                    const listContainer = document.getElementById('playerListContainer');
+                    listContainer.innerHTML = ''; 
+
+                    if (data.players && data.players.list && data.players.list.length > 0) {
+                        playerContainer.style.display = 'block';
+                        data.players.list.forEach(player => {
+                            const playerTag = document.createElement('span');
+                            playerTag.className = 'player-tag';
+                            playerTag.innerHTML = `<img src="https://mc-heads.net/avatar/${player.uuid || player.name}/16" alt="head"> ${player.name}`;
+                            listContainer.appendChild(playerTag);
+                        });
+                    } else {
+                        playerContainer.style.display = 'none';
+                    }
+
                 } else {
-                    // Node is Offline setup paths
+                    // Node Endpoint Offline Mapping
                     document.getElementById('srvStatusBadge').className = 'badge-status offline';
-                    document.getElementById('srvStatusBadge').innerText = 'Offline';
-                    document.getElementById('srvVersion').innerText = 'N/A';
-                    document.getElementById('srvPlayers').innerText = '0 / 0';
+                    document.getElementById('srvStatusBadge').innerText = 'Connection Refused';
                     document.getElementById('srvPing').innerText = 'Timeout';
-                    document.getElementById('srvMotd').innerText = 'Connection vector terminated. The server could be down or parsing credentials timed out.';
+                    document.getElementById('srvPlayers').innerText = '0 / 0';
+                    document.getElementById('srvSoftware').innerText = 'Offline';
+                    document.getElementById('srvVersion').innerText = 'N/A';
+                    document.getElementById('srvProtocol').innerText = 'N/A';
+                    document.getElementById('srvMotd').innerText = 'Error: The connection vector to this node timed out. Verify your IP structure and port forwarding rules or try again.';
                     document.getElementById('srvIcon').src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+                    document.getElementById('playerSection').style.display = 'none';
                 }
 
             } catch (error) {
                 loader.style.display = 'none';
-                alert('Error parsing connection vectors. Please check network properties or entry configuration.');
+                alert('Fatal system handshake error during vector mapping configuration.');
                 console.error(error);
             }
         }
 
-        // Ambient neon canvas floating particle configuration scripts
+        // Ambient floating space canvas particle background systems array loop setup
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -328,6 +526,7 @@
         animate();
     </script>
 
+    <!-- Global Anti-Copy Protection Overlay layer -->
     <script src="protection.js"></script>
 
 </body>
