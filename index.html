@@ -1,499 +1,1186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyrusLinksHub | The Ultimate Gaming & Utility Platform</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Interactive Component Engine Layout Overrides */
-        .parallax-hero-wrap {
-            position: relative;
-            width: 100%;
-            min-height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 80px 20px;
-            text-align: center;
-        }
-        .hero-content-front {
-            position: relative;
-            z-index: 5;
-            max-width: 850px;
-        }
-        .typed-cursor {
-            color: var(--cyan-glow);
-            font-weight: 800;
-            animation: typeBlink 0.7s infinite;
-            margin-left: 3px;
-        }
-        @keyframes typeBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        .flex-btn-row {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 35px;
-            flex-wrap: wrap;
-        }
-        
-        /* Stats Component Dashboard Layout */
-        .stats-dashboard {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin: 40px 0;
-        }
-        .stat-node-card {
-            text-align: center;
-            padding: 35px 20px;
-        }
-        .stat-counter {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--cyan-glow);
-            text-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-            margin-bottom: 5px;
-        }
-        
-        /* Dropdown FAQ Mechanics */
-        .faq-accordion-block {
-            max-width: 850px;
-            margin: 0 auto;
-        }
-        .faq-accordion-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .faq-accordion-item:hover {
-            border-color: rgba(0, 242, 254, 0.25);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .faq-trigger-header {
-            padding: 22px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-        .faq-arrow {
-            font-size: 0.8rem;
-            transition: transform 0.3s ease;
-            color: var(--cyan-glow);
-        }
-        .faq-panel-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
-            background: rgba(0, 0, 0, 0.25);
-        }
-        .faq-panel-content p {
-            padding: 22px;
-            margin: 0;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.15rem;
-            color: #cbd5e1;
-            line-height: 1.6;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        .faq-accordion-item.active .faq-panel-content {
-            max-height: 1000px;
-            transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
-        }
-        .faq-accordion-item.active .faq-arrow {
-            transform: rotate(180deg);
-        }
-        
-        @media(max-width: 992px) {
-            .stats-dashboard { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media(max-width: 550px) {
-            .stats-dashboard { grid-template-columns: 1fr; }
-        }
-    </style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CyrusLinksHub | Home</title>
+
+<meta name="description" content="CyrusLinksHub - Premium Minecraft Tools, Gaming Resources, APKs, Movies, Music and Community.">
+
+<link rel="icon" href="assets/logo.png">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
+
 <body>
 
-    <div class="space-bg">
-        <div class="particles"></div>
-        <div class="particles-two"></div>
-    </div>
+<canvas id="particles"></canvas>
 
-    <header>
-        <div class="topbar">
-            <div class="brand">
-                <a href="index.html">
-                    <img src="1000042115.png" alt="CyrusLinksHub Logo" class="brand-banner-logo">
-                </a>
-            </div>
-            <a href="https://discord.gg/YOURINVITE" target="_blank" class="discord-btn">Join Discord</a>
-        </div>
+<div class="bg-glow glow-left"></div>
+<div class="bg-glow glow-right"></div>
+<div class="bg-glow glow-bottom"></div>
 
-        <nav class="navbar">
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="tools.html" class="nav-link">Tools</a>
-            <a href="/games/" class="nav-link">Games</a>
-            <a href="/about/" class="nav-link">About</a>
-        </nav>
-    </header>
+<header class="header">
 
-    <div class="parallax-hero-wrap">
-        <div class="hero-content-front">
-            <p style="font-family: 'Orbitron', sans-serif; color: var(--text-muted); font-size: 1rem; letter-spacing: 5px; margin-bottom: 12px; text-transform: uppercase;">WELCOME TO</p>
-            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 3.8rem; font-weight: 800; color: #ffffff; letter-spacing: 2px; margin-bottom: 20px;">CYRUSLINKSHUB</h1>
-            
-            <div style="min-height: 45px; font-family: 'Rajdhani', sans-serif; font-size: 1.7rem; font-weight: 600; color: #cbd5e1; letter-spacing: 0.5px;">
-                <span id="typingTarget"></span><span class="typed-cursor">|</span>
-            </div>
-            
-            <div class="flex-btn-row">
-                <a href="tools.html" class="btn-glow">Explore Tools</a>
-                <a href="https://discord.gg/YOURINVITE" target="_blank" class="btn-glow">Join Discord</a>
-            </div>
-        </div>
-    </div>
+<div class="container">
 
-    <main class="main-container">
+<nav class="navbar">
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">About CyrusLinksHub</h2>
-            <div class="glass-card" style="padding: 45px 35px; text-align: center;">
-                <p style="font-size: 1.35rem; line-height: 1.8; max-width: 900px; margin: 0 auto; font-family: 'Rajdhani', sans-serif; color: #f1f5f9; font-weight: 500;">
-                    CyrusLinksHub is a modern online platform designed for gamers, creators, developers and technology enthusiasts.
-                </p>
-                <div style="width: 50px; height: 2px; background: var(--cyan-glow); margin: 30px auto; box-shadow: 0 0 8px var(--cyan-glow);"></div>
-                <p style="font-size: 1.15rem; line-height: 1.7; max-width: 850px; margin: 0 auto; color: var(--text-muted); font-family: 'Rajdhani', sans-serif;">
-                    Our goal is to provide high-quality online tools, gaming resources, downloads and an active community through one fast, secure and modern website.
-                </p>
-            </div>
-        </section>
+<a href="index.html" class="logo">
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">What We Offer</h2>
-            <div class="tools-grid">
-                
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">Online Tools</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Modern browser tools.</p>
-                    </div>
-                </div>
+<div class="logo-box">
+CL
+</div>
 
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">Gaming Resources</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Helpful gaming utilities.</p>
-                    </div>
-                </div>
+<div class="logo-text">
+<h2>CyrusLinksHub</h2>
+<span>Gaming • Tools • Community</span>
+</div>
 
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">APK Collection</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Useful Android apps.</p>
-                    </div>
-                </div>
+</a>
 
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">Movies</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Entertainment resources.</p>
-                    </div>
-                </div>
+<ul class="nav-links">
 
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">Music</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Music content.</p>
-                    </div>
-                </div>
+<li>
+<a class="active" href="index.html">
+<i class="fa-solid fa-house"></i>
+Home
+</a>
+</li>
 
-                <div class="glass-card">
-                    <div>
-                        <h3 style="color: var(--cyan-glow); margin-bottom: 12px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 600;">Community</h3>
-                        <p style="color: var(--text-muted); margin: 0; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem;">Discord & updates.</p>
-                    </div>
-                </div>
+<li>
+<a href="tools.html">
+<i class="fa-solid fa-screwdriver-wrench"></i>
+Tools
+</a>
+</li>
 
-            </div>
-        </section>
+<li>
+<a href="games.html">
+<i class="fa-solid fa-gamepad"></i>
+Games
+</a>
+</li>
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">Why Choose Us</h2>
-            <div class="tools-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
-                
-                <div class="glass-card" style="text-align: center; padding: 30px 20px;">
-                    <h4 style="color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 0.5px;">Fast Performance</h4>
-                </div>
+<li>
+<a href="apk.html">
+<i class="fa-solid fa-mobile-screen-button"></i>
+APK
+</a>
+</li>
 
-                <div class="glass-card" style="text-align: center; padding: 30px 20px;">
-                    <h4 style="color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 0.5px;">Secure Platform</h4>
-                </div>
+<li>
+<a href="movies.html">
+<i class="fa-solid fa-film"></i>
+Movies
+</a>
+</li>
 
-                <div class="glass-card" style="text-align: center; padding: 30px 20px;">
-                    <h4 style="color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 0.5px;">Community Driven</h4>
-                </div>
+<li>
+<a href="music.html">
+<i class="fa-solid fa-music"></i>
+Music
+</a>
+</li>
 
-                <div class="glass-card" style="text-align: center; padding: 30px 20px;">
-                    <h4 style="color: #ffffff; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; letter-spacing: 0.5px;">Modern Design</h4>
-                </div>
+<li>
+<a href="#about">
+<i class="fa-solid fa-circle-info"></i>
+About
+</a>
+</li>
 
-            </div>
-        </section>
+</ul>
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">System Metrics</h2>
-            <div class="stats-dashboard">
-                
-                <div class="glass-card stat-node-card">
-                    <div class="stat-counter" data-target="2500">0</div>
-                    <p style="font-family: 'Rajdhani', sans-serif; color: var(--text-muted); font-size: 1rem; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Active Members</p>
-                </div>
+<div class="nav-buttons">
 
-                <div class="glass-card stat-node-card">
-                    <div class="stat-counter" data-target="45">0</div>
-                    <p style="font-family: 'Rajdhani', sans-serif; color: var(--text-muted); font-size: 1rem; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Online Tools</p>
-                </div>
+<a href="https://discord.gg/"
+target="_blank"
+class="discord-btn">
 
-                <div class="glass-card stat-node-card">
-                    <div class="stat-counter" data-target="99">0</div>
-                    <p style="font-family: 'Rajdhani', sans-serif; color: var(--text-muted); font-size: 1rem; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Uptime percentage</p>
-                </div>
+<i class="fab fa-discord"></i>
 
-                <div class="glass-card stat-node-card">
-                    <div class="stat-counter" data-target="150">0</div>
-                    <p style="font-family: 'Rajdhani', sans-serif; color: var(--text-muted); font-size: 1rem; text-transform: uppercase; margin: 0; letter-spacing: 1px;">Daily Requests</p>
-                </div>
+Join Discord
 
-            </div>
-        </section>
+</a>
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">Join Our Community</h2>
-            <div class="glass-card" style="padding: 45px 30px; text-align: center;">
-                <div class="tools-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-bottom: 35px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px;">
-                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.20rem; color: #cbd5e1; font-weight: 600;">Friendly Members</div>
-                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.20rem; color: #cbd5e1; font-weight: 600;">Fast Support</div>
-                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.20rem; color: #cbd5e1; font-weight: 600;">Regular Updates</div>
-                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.20rem; color: #cbd5e1; font-weight: 600;">Giveaways</div>
-                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.20rem; color: #cbd5e1; font-weight: 600;">Events</div>
-                </div>
-                <div style="display: flex; justify-content: center; width: 100%;">
-                    <a href="https://discord.gg/YOURINVITE" target="_blank" class="btn-glow" style="max-width: 280px; width: 100%;">Join Discord</a>
-                </div>
-            </div>
-        </section>
+<button class="menu-toggle">
 
-        <section class="tool-section hidden">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="faq-accordion-block">
-                
-                <div class="faq-accordion-item">
-                    <div class="faq-trigger-header">What is CyrusLinksHub? <span class="faq-arrow">▼</span></div>
-                    <div class="faq-panel-content">
-                        <p>CyrusLinksHub is a modern online platform designed for gamers, creators, developers and technology enthusiasts.</p>
-                    </div>
-                </div>
+<i class="fas fa-bars"></i>
 
-                <div class="faq-accordion-item">
-                    <div class="faq-trigger-header">Are all tools free? <span class="faq-arrow">▼</span></div>
-                    <div class="faq-panel-content">
-                        <p>Our goal is to provide high-quality online tools, gaming resources, downloads and an active community through one fast, secure and modern website completely without premium subscription barriers.</p>
-                    </div>
-                </div>
+</button>
 
-                <div class="faq-accordion-item">
-                    <div class="faq-trigger-header">How do I join Discord? <span class="faq-arrow">▼</span></div>
-                    <div class="faq-panel-content">
-                        <p>Simply execute any global invitation route present inside our core site navigation interfaces or secondary interactive layout links to sync directly with our support group network platform.</p>
-                    </div>
-                </div>
+</div>
 
-                <div class="faq-accordion-item">
-                    <div class="faq-trigger-header">How often is the website updated? <span class="faq-arrow">▼</span></div>
-                    <div class="faq-panel-content">
-                        <p>System assets, performance layers, and node features undergo dynamic continuous integration builds based directly upon ongoing platform updates and community security optimizations.</p>
-                    </div>
-                </div>
+</nav>
 
-                <div class="faq-accordion-item">
-                    <div class="faq-trigger-header">Can I suggest new tools? <span class="faq-arrow">▼</span></div>
-                    <div class="faq-panel-content">
-                        <p>We actively look for expansion strategies. Users are invited to log feature enhancement frameworks directly across our dedicated community repository branches and developer groups.</p>
-                    </div>
-                </div>
+</div>
 
-            </div>
-        </section>
+</header>
 
-        <section class="tool-section hidden" style="margin-top: 110px; margin-bottom: 50px;">
-            <div class="glass-card" style="text-align: center; padding: 55px 30px; border-color: rgba(0,242,254,0.2); background: linear-gradient(145deg, rgba(4,5,8,0.92), rgba(0,242,254,0.02));">
-                <h2 style="font-family: 'Orbitron', sans-serif; color: #ffffff; margin-bottom: 15px; letter-spacing: 1px; font-weight: 700;">Ready To Explore?</h2>
-                <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 35px auto; font-family: 'Rajdhani', sans-serif;">
-                    Discover premium online tools and become part of the CyrusLinksHub community.
-                </p>
-                <div class="flex-btn-row">
-                    <a href="tools.html" class="btn-glow">Explore Tools</a>
-                    <a href="https://discord.gg/YOURINVITE" target="_blank" class="btn-glow">Join Discord</a>
-                </div>
-            </div>
-        </section>
+<main>
 
-    </main>
+<section class="hero">
 
-    <button id="backToTop" class="back-to-top" title="Go to top">Top</button>
+<div class="container">
 
-    <footer class="system-footer">
-        
-        <div class="footer-group">
-            <h3 class="footer-group-title" style="font-size: 1.6rem; font-weight: 800; letter-spacing: 3px;">LOGO</h3>
-        </div>
+<div class="hero-content">
 
-        <div class="footer-group">
-            <h3 class="footer-group-title">Navigation</h3>
-            <ul class="footer-text-list">
-                <li>Home</li>
-                <li>Tools</li>
-                <li>Games</li>
-                <li>About</li>
-            </ul>
-        </div>
+<div class="hero-badge">
 
-        <div class="footer-group">
-            <h3 class="footer-group-title">Resources</h3>
-            <ul class="footer-text-list">
-                <li>APK</li>
-                <li>Movies</li>
-                <li>Music</li>
-            </ul>
-        </div>
+<i class="fas fa-bolt"></i>
 
-        <div class="footer-group">
-            <h3 class="footer-group-title">Community</h3>
-            <ul class="footer-text-list">
-                <li>Discord</li>
-                <li>GitHub</li>
-                <li>YouTube</li>
-            </ul>
-        </div>
+Powerful • Fast • Secure • Community Driven
 
-        <div class="footer-copyright">
-            Copyright 2026 CyrusLinksHub<br>All Rights Reserved.
-        </div>
-    </footer>
+</div>
 
-    <script>
-        // Intersection Observer for Elements Scroll Reveal
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("show");
-                }
-            });
-        }, { threshold: 0.05 });
-        document.querySelectorAll(".hidden").forEach(el => revealObserver.observe(el));
+<h1>
 
-        // Incremental Metric Counter System
-        const triggerStatsCounters = () => {
-            document.querySelectorAll('.stat-counter').forEach(counter => {
-                const targetValue = parseInt(counter.getAttribute('data-target'));
-                let currentVal = 0;
-                const incrementStep = Math.ceil(targetValue / 40);
-                
-                const updateCounterValue = () => {
-                    currentVal += incrementStep;
-                    if(currentVal >= targetValue) {
-                        counter.textContent = targetValue.toLocaleString() + (targetValue === 99 ? '%' : '+');
-                    } else {
-                        counter.textContent = currentVal.toLocaleString() + '+';
-                        requestAnimationFrame(updateCounterValue);
-                    }
-                };
-                updateCounterValue();
-            });
-        };
-        const statsSectionObserver = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) {
-                triggerStatsCounters();
-                statsSectionObserver.disconnect();
-            }
-        }, { threshold: 0.1 });
-        if(document.querySelector('.stats-dashboard')) {
-            statsSectionObserver.observe(document.querySelector('.stats-dashboard'));
-        }
+WELCOME TO
 
-        // Home Interface Automated Typing Engine Loop
-        const coreTypingPhrases = [
-            "The Ultimate Gaming & Utility Platform",
-            "Powerful Online Platform...",
-            "Fast & Secure Experience...",
-            "Built For Everyone...",
-            "Join Our Community..."
-        ];
-        let currentPhraseIdx = 0, currentCharIdx = 0, currentOutputStr = "", isDeletingState = false;
-        const typeTerminalCycle = () => {
-            const currentFullPhrase = coreTypingPhrases[currentPhraseIdx];
-            if (isDeletingState) {
-                currentOutputStr = currentFullPhrase.substring(0, currentCharIdx - 1);
-                currentCharIdx--;
-            } else {
-                currentOutputStr = currentFullPhrase.substring(0, currentCharIdx + 1);
-                currentCharIdx++;
-            }
-            document.getElementById("typingTarget").textContent = currentOutputStr;
+<span>CYRUSLINKSHUB</span>
 
-            let processingTimeoutDelay = isDeletingState ? 30 : 60;
-            if (!isDeletingState && currentOutputStr === currentFullPhrase) {
-                processingTimeoutDelay = 2000;
-                isDeletingState = true;
-            } else if (isDeletingState && currentOutputStr === "") {
-                isDeletingState = false;
-                currentPhraseIdx = (currentPhraseIdx + 1) % coreTypingPhrases.length;
-                processingTimeoutDelay = 300;
-            }
-            setTimeout(typeTerminalCycle, processingTimeoutDelay);
-        };
-        document.addEventListener("DOMContentLoaded", () => setTimeout(typeTerminalCycle, 600));
+</h1>
 
-        // Interactive Accordion Controller Matrix
-        document.querySelectorAll('.faq-trigger-header').forEach(headerTriggerNode => {
-            headerTriggerNode.addEventListener('click', () => {
-                const parentAccordionItemNode = headerTriggerNode.parentElement;
-                const wasActiveNode = parentAccordionItemNode.classList.contains('active');
-                document.querySelectorAll('.faq-accordion-item').forEach(item => item.classList.remove('active'));
-                if (!wasActiveNode) {
-                    parentAccordionItemNode.classList.add('active');
-                }
-            });
-        });
+<p class="hero-subtitle">
 
-        // Top Expedient Layout Controls
-        const backToTopButton = document.getElementById("backToTop");
-        window.addEventListener("scroll", () => {
-            if (window.pageYOffset > 400) {
-                backToTopButton.classList.add("visible");
-            } else {
-                backToTopButton.classList.remove("visible");
-            }
-        });
-        backToTopButton.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-    </script>
+The Ultimate Gaming & Utility Platform
+
+</p>
+
+<div class="typing-box">
+
+<span id="typing"></span>
+
+</div>
+
+<div class="hero-buttons">
+
+<a href="tools.html"
+class="btn btn-primary">
+
+<i class="fas fa-rocket"></i>
+
+Explore Tools
+
+</a>
+
+<a href="https://discord.gg/"
+target="_blank"
+class="btn btn-secondary">
+
+<i class="fab fa-discord"></i>
+
+Join Discord
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<!-- ===========================
+PART 2
+About + What We Offer + Why Choose Us
+=========================== -->
+
+<section id="about" class="about-section">
+
+<div class="container">
+
+<div class="section-title">
+<h2>About CyrusLinksHub</h2>
+<p>Your Modern Gaming & Utility Platform</p>
+</div>
+
+<div class="glass-card about-card">
+
+<div class="about-icon">
+<i class="fas fa-cube"></i>
+</div>
+
+<div class="about-content">
+
+<h3>Built for Gamers, Creators & Developers</h3>
+
+<p>
+
+CyrusLinksHub is a premium platform providing Minecraft tools,
+gaming resources, APK collections, entertainment content and
+online utilities through a fast, modern and secure interface.
+
+</p>
+
+<p>
+
+Our mission is to build one powerful hub where everyone can
+discover useful tools, downloads, tutorials and an active
+community.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===========================
+WHAT WE OFFER
+=========================== -->
+
+<section class="features-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>What We Offer</h2>
+
+<p>Everything in one place.</p>
+
+</div>
+
+<div class="feature-grid">
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🛠️
+</div>
+
+<h3>Online Tools</h3>
+
+<p>
+
+Minecraft utilities, generators,
+server checkers and developer tools.
+
+</p>
+
+<a href="tools.html" class="card-btn">
+
+Explore
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🎮
+</div>
+
+<h3>Gaming</h3>
+
+<p>
+
+Gaming resources,
+mods, downloads,
+guides and much more.
+
+</p>
+
+<a href="games.html" class="card-btn">
+
+Explore
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+📱
+</div>
+
+<h3>APK Collection</h3>
+
+<p>
+
+Safe Android applications,
+utilities and premium apps.
+
+</p>
+
+<a href="apk.html" class="card-btn">
+
+Explore
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🎬
+</div>
+
+<h3>Movies</h3>
+
+<p>
+
+Entertainment resources,
+movie collections and updates.
+
+</p>
+
+<a href="movies.html" class="card-btn">
+
+Explore
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🎵
+</div>
+
+<h3>Music</h3>
+
+<p>
+
+Music streaming,
+albums and entertainment resources.
+
+</p>
+
+<a href="music.html" class="card-btn">
+
+Explore
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+💬
+</div>
+
+<h3>Community</h3>
+
+<p>
+
+Join our growing Discord community,
+events and announcements.
+
+</p>
+
+<a href="https://discord.gg/" target="_blank" class="card-btn">
+
+Join
+
+<i class="fas fa-arrow-right"></i>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===========================
+WHY CHOOSE US
+=========================== -->
+
+<section class="why-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Why Choose CyrusLinksHub?</h2>
+
+<p>Designed with performance and simplicity.</p>
+
+</div>
+
+<div class="why-grid">
+
+<div class="glass-card why-card">
+
+<i class="fas fa-bolt"></i>
+
+<h3>Lightning Fast</h3>
+
+<p>
+
+Optimized pages with smooth performance
+across desktop and mobile.
+
+</p>
+
+</div>
+
+
+
+<div class="glass-card why-card">
+
+<i class="fas fa-shield-halved"></i>
+
+<h3>Secure Platform</h3>
+
+<p>
+
+Safe downloads,
+verified tools and trusted resources.
+
+</p>
+
+</div>
+
+
+
+<div class="glass-card why-card">
+
+<i class="fas fa-users"></i>
+
+<h3>Community Driven</h3>
+
+<p>
+
+Suggestions,
+updates and improvements
+from real users.
+
+</p>
+
+</div>
+
+
+
+<div class="glass-card why-card">
+
+<i class="fas fa-wand-magic-sparkles"></i>
+
+<h3>Premium Design</h3>
+
+<p>
+
+Modern SaaS interface,
+glassmorphism cards
+and responsive layouts.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===========================
+PART 3
+Community + Statistics + FAQ + CTA
+=========================== -->
+
+<section id="community" class="community-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Join Our Community</h2>
+
+<p>Become part of the CyrusLinksHub family.</p>
+
+</div>
+
+<div class="community-grid">
+
+<div class="glass-card community-card">
+
+<h3>
+<i class="fab fa-discord"></i>
+Discord Community
+</h3>
+
+<ul>
+
+<li><i class="fas fa-check-circle"></i> Friendly Members</li>
+
+<li><i class="fas fa-check-circle"></i> Instant Support</li>
+
+<li><i class="fas fa-check-circle"></i> Giveaways & Events</li>
+
+<li><i class="fas fa-check-circle"></i> Latest Updates</li>
+
+<li><i class="fas fa-check-circle"></i> Early Tool Releases</li>
+
+<li><i class="fas fa-check-circle"></i> Suggestions & Feedback</li>
+
+</ul>
+
+<a href="https://discord.gg/"
+target="_blank"
+class="btn btn-primary">
+
+<i class="fab fa-discord"></i>
+
+Join Discord
+
+</a>
+
+</div>
+
+<div class="glass-card stats-card">
+
+<h3>Platform Statistics</h3>
+
+<div class="stats-grid">
+
+<div class="stat-box">
+
+<h2 class="counter"
+data-target="150">0</h2>
+
+<span>Online Tools</span>
+
+</div>
+
+<div class="stat-box">
+
+<h2 class="counter"
+data-target="25">0</h2>
+
+<span>Categories</span>
+
+</div>
+
+<div class="stat-box">
+
+<h2>99.9%</h2>
+
+<span>Availability</span>
+
+</div>
+
+<div class="stat-box">
+
+<h2>24/7</h2>
+
+<span>Community</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===========================
+FAQ
+=========================== -->
+
+<section class="faq-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Frequently Asked Questions</h2>
+
+<p>Everything you need to know.</p>
+
+</div>
+
+<div class="faq-list">
+
+<div class="glass-card faq-item">
+
+<button class="faq-question">
+
+What is CyrusLinksHub?
+
+<i class="fas fa-chevron-down"></i>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+
+CyrusLinksHub is an all-in-one platform for gaming tools,
+Minecraft resources, APK downloads, entertainment,
+utilities and community content.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="glass-card faq-item">
+
+<button class="faq-question">
+
+Are all tools free?
+
+<i class="fas fa-chevron-down"></i>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+
+Yes.
+Almost every tool on CyrusLinksHub is completely free
+to use directly from your browser.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="glass-card faq-item">
+
+<button class="faq-question">
+
+How often is the website updated?
+
+<i class="fas fa-chevron-down"></i>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+
+We regularly add new tools,
+features, games,
+downloads and improvements.
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<div class="glass-card faq-item">
+
+<button class="faq-question">
+
+Can I suggest new tools?
+
+<i class="fas fa-chevron-down"></i>
+
+</button>
+
+<div class="faq-answer">
+
+<p>
+
+Absolutely!
+Join our Discord server and submit your ideas.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ===========================
+CALL TO ACTION
+=========================== -->
+
+<section class="cta-section">
+
+<div class="container">
+
+<div class="glass-card cta-card">
+
+<div>
+
+<h2>Ready To Explore?</h2>
+
+<p>
+
+Discover premium tools,
+downloads,
+gaming resources
+and become part of the community.
+
+</p>
+
+</div>
+
+<div class="cta-buttons">
+
+<a href="tools.html"
+class="btn btn-primary">
+
+<i class="fas fa-rocket"></i>
+
+Explore Tools
+
+</a>
+
+<a href="https://discord.gg/"
+target="_blank"
+class="btn btn-secondary">
+
+<i class="fab fa-discord"></i>
+
+Join Discord
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===========================
+PART 4 (FINAL)
+Professional Footer + Back To Top + JavaScript
+=========================== -->
+
+<footer class="footer">
+
+<div class="container">
+
+<div class="footer-grid">
+
+<!-- Logo -->
+
+<div class="footer-column">
+
+<div class="footer-logo">
+
+<div class="logo-box">
+CL
+</div>
+
+<div>
+
+<h3>CyrusLinksHub</h3>
+
+<p>
+The Ultimate Gaming & Utility Platform
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Navigation -->
+
+<div class="footer-column">
+
+<h4>Navigation</h4>
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+
+<li><a href="tools.html">Tools</a></li>
+
+<li><a href="games.html">Games</a></li>
+
+<li><a href="#about">About</a></li>
+
+</ul>
+
+</div>
+
+<!-- Resources -->
+
+<div class="footer-column">
+
+<h4>Resources</h4>
+
+<ul>
+
+<li><a href="apk.html">APK</a></li>
+
+<li><a href="movies.html">Movies</a></li>
+
+<li><a href="music.html">Music</a></li>
+
+</ul>
+
+</div>
+
+<!-- Community -->
+
+<div class="footer-column">
+
+<h4>Community</h4>
+
+<ul>
+
+<li>
+
+<a href="https://discord.gg/" target="_blank">
+
+Discord
+
+</a>
+
+</li>
+
+<li>
+
+<a href="https://github.com/" target="_blank">
+
+GitHub
+
+</a>
+
+</li>
+
+<li>
+
+<a href="https://youtube.com/" target="_blank">
+
+YouTube
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>
+
+© 2026 CyrusLinksHub.
+
+All Rights Reserved.
+
+</p>
+
+</div>
+
+</div>
+
+</footer>
+
+
+<!-- Back To Top -->
+
+<button id="topBtn">
+
+<i class="fas fa-arrow-up"></i>
+
+</button>
+
+
+<!-- ===========================
+JavaScript
+=========================== -->
+
+<script>
+
+/* ===========================
+Typing Animation
+=========================== */
+
+const words=[
+
+"Powerful Online Platform",
+
+"Fast & Secure Experience",
+
+"Built For Everyone",
+
+"Join Our Community"
+
+];
+
+let wordIndex=0;
+let charIndex=0;
+let deleting=false;
+
+const typing=document.getElementById("typing");
+
+function typeEffect(){
+
+const current=words[wordIndex];
+
+if(!deleting){
+
+typing.textContent=current.substring(0,charIndex++);
+
+if(charIndex>current.length){
+
+deleting=true;
+
+setTimeout(typeEffect,1400);
+
+return;
+
+}
+
+}else{
+
+typing.textContent=current.substring(0,charIndex--);
+
+if(charIndex===0){
+
+deleting=false;
+
+wordIndex=(wordIndex+1)%words.length;
+
+}
+
+}
+
+setTimeout(typeEffect,deleting?40:80);
+
+}
+
+typeEffect();
+
+
+/* ===========================
+Counter Animation
+=========================== */
+
+document.querySelectorAll(".counter").forEach(counter=>{
+
+const update=()=>{
+
+const target=+counter.dataset.target;
+
+const count=+counter.innerText;
+
+const speed=target/80;
+
+if(count<target){
+
+counter.innerText=Math.ceil(count+speed);
+
+requestAnimationFrame(update);
+
+}else{
+
+counter.innerText=target;
+
+}
+
+};
+
+update();
+
+});
+
+
+/* ===========================
+FAQ
+=========================== */
+
+document.querySelectorAll(".faq-question").forEach(btn=>{
+
+btn.onclick=()=>{
+
+btn.parentElement.classList.toggle("active");
+
+};
+
+});
+
+
+/* ===========================
+Back To Top
+=========================== */
+
+const topBtn=document.getElementById("topBtn");
+
+window.addEventListener("scroll",()=>{
+
+topBtn.style.display=
+
+window.scrollY>300
+
+?
+
+"flex"
+
+:
+
+"none";
+
+});
+
+topBtn.onclick=()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
+
+
+/* ===========================
+Particles
+=========================== */
+
+const canvas=document.getElementById("particles");
+
+const ctx=canvas.getContext("2d");
+
+function resize(){
+
+canvas.width=window.innerWidth;
+
+canvas.height=window.innerHeight;
+
+}
+
+resize();
+
+window.addEventListener("resize",resize);
+
+const particles=[];
+
+for(let i=0;i<180;i++){
+
+particles.push({
+
+x:Math.random()*canvas.width,
+
+y:Math.random()*canvas.height,
+
+r:Math.random()*2+0.6,
+
+dx:(Math.random()-0.5)*0.25,
+
+dy:(Math.random()-0.5)*0.25
+
+});
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach(p=>{
+
+p.x+=p.dx;
+
+p.y+=p.dy;
+
+if(p.x<0)p.x=canvas.width;
+
+if(p.x>canvas.width)p.x=0;
+
+if(p.y<0)p.y=canvas.height;
+
+if(p.y>canvas.height)p.y=0;
+
+ctx.beginPath();
+
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+
+ctx.fillStyle="#26F4FF";
+
+ctx.shadowColor="#26F4FF";
+
+ctx.shadowBlur=12;
+
+ctx.fill();
+
+});
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+</script>
+
+</main>
+
 </body>
+
 </html>
