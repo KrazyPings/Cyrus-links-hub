@@ -261,7 +261,7 @@
                     </div>
 
                     <div id="errorPanel" class="error-panel">
-                        <h5><i class="fa-solid fa-triangle-exclamation"></i> HANDSHAKE TERMINATED</h5>
+                        <h5><i class="fa-solid fa-triangle-exclamation"></i> DIAGNOSTIC CRITICAL FAIL</h5>
                         <p id="errorText">The selected version index doesn't host deployment builds or is currently experimental.</p>
                     </div>
 
@@ -328,10 +328,8 @@
                     throw new Error('PaperMC project registry returned empty core dataset mappings.');
                 }
 
-                // Auto-resolve when form input is empty
                 if (!versionInput) {
                     let fallbackResolved = false;
-                    // Scan backwards through stable trees to find an operational live build stream
                     for (let i = availableVersions.length - 1; i >= 0; i--) {
                         let tempVersion = availableVersions[i];
                         try {
@@ -350,7 +348,6 @@
                     if (!fallbackResolved) versionInput = availableVersions[availableVersions.length - 1];
                 }
 
-                // Query targeted profile details
                 const versionRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}`);
                 if (!versionRes.ok) {
                     throw new Error(`Target track '${versionInput}' does not contain an active binary on the repository manifests.`);
@@ -364,7 +361,7 @@
                 const latestBuild = versionData.builds[versionData.builds.length - 1];
 
                 const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(versionInput)}/builds/${latestBuild}`);
-                if (!buildRes.ok) throw new Error('Build property handshake matrix interrupted.');
+                if (!buildRes.ok) throw new Error('Build property synchronization matrix interrupted.');
                 
                 const buildData = await buildRes.json();
 
@@ -405,7 +402,6 @@
             }
         }
 
-        /* Particle Background Engine Core */
         const canvas = document.getElementById("particles");
         const ctx = canvas.getContext("2d");
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
