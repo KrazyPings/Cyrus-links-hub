@@ -310,12 +310,10 @@
     <main style="padding: 40px 0;">
         <div class="container">
             
-            <!-- Direct Back Button Layer -->
             <a href="tools.html" class="back-link">
                 <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
             </a>
 
-            <!-- CORE TELEMETRY ENGINE -->
             <section style="padding: 0; text-align: center;">
                 <div class="section-title">
                     <h2>MINECRAFT TELEMETRY SYSTEMS</h2>
@@ -324,7 +322,6 @@
 
                 <div class="glass-card checker-card">
                     
-                    <!-- Platform Type Multi-Selectors -->
                     <div class="platform-selector">
                         <button type="button" id="typeJava" class="platform-btn active" onclick="setPlatform('java', 25565)">
                             <i class="fa-brands fa-java"></i> Java Edition
@@ -342,12 +339,10 @@
                         </button>
                     </div>
 
-                    <!-- LOADING STATE PANEL -->
                     <div id="loadingIndicator" class="loader">
                         <i class="fa-solid fa-atom fa-spin"></i> Synchronizing Handshake Protocol...
                     </div>
 
-                    <!-- INJECTED DATA INTERFACE -->
                     <div id="statusResult" class="status-display">
                         
                         <div class="server-header">
@@ -361,7 +356,6 @@
                             <div id="srvStatusBadge" class="badge-status online" style="margin-top: 5px;">Active Vector</div>
                         </div>
 
-                        <!-- Full Telemetry Array Block Elements -->
                         <div class="telemetry-grid">
                             <div class="telemetry-box">
                                 <span>Network Ping Delay</span>
@@ -389,11 +383,9 @@
                             </div>
                         </div>
 
-                        <!-- MOTD Container Row -->
                         <h4 style="margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Server Broadcast Header (MOTD)</h4>
                         <div id="srvMotd" class="motd-container"></div>
 
-                        <!-- Live Online Player Registry List Block -->
                         <div id="playerSection" class="player-registry" style="display: none;">
                             <h4 style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px;">Live Online User Sample List</h4>
                             <div id="playerListContainer" class="player-list"></div>
@@ -436,7 +428,8 @@
             resultBox.style.display = 'none';
 
             try {
-                const apiType = selectedPlatform === 'bedrock' ? 'bedrock' : '3';
+                // FIXED: Adjusted bedrock routing mapping array string logic to inject structural API version correctly
+                const apiType = selectedPlatform === 'bedrock' ? 'bedrock/3' : '3';
                 const response = await fetch(`https://api.mcsrvstat.us/${apiType}/${encodeURIComponent(ipInput)}:${encodeURIComponent(portInput)}`);
                 const data = await response.json();
 
@@ -487,7 +480,7 @@
                     if (data.players && data.players.list && data.players.list.length > 0) {
                         playerContainer.style.display = 'block';
                         data.players.list.forEach(player => {
-                                                        const playerTag = document.createElement('span');
+                            const playerTag = document.createElement('span');
                             playerTag.className = 'player-tag';
                             playerTag.innerHTML = `<img src="https://mc-heads.net/avatar/${player.uuid || player.name}/16" alt="head"> ${player.name}`;
                             listContainer.appendChild(playerTag);
