@@ -2,44 +2,145 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PaperMC Build Checker | CyrusLinksHub</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+<title>PaperMC Pro Dashboard | CyrusLinksHub</title>
+
+<meta name="description"
+content="Professional PaperMC Build Checker with live API, build history and official downloads.">
+
+<link rel="stylesheet"
+href="style.css">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
+<!-- Animated Background -->
+
+<div class="bg-glow glow-left"></div>
+
+<div class="bg-glow glow-right"></div>
+
+<div class="bg-glow glow-bottom"></div>
+
 <canvas id="particles"></canvas>
 
-<!-- ================= NAVBAR ================= -->
+<!-- ================= HEADER ================= -->
+
 <header class="header">
 
 <div class="container navbar">
 
 <div class="logo">
-<div class="logo-box">CL</div>
+
+<div class="logo-box">
+
+<img src="logo.png"
+alt="CyrusLinksHub">
+
+</div>
 
 <div class="logo-text">
+
 <h2>CyrusLinksHub</h2>
-<span>Minecraft Tools</span>
+
+<span>Minecraft Tools Platform</span>
+
 </div>
 
 </div>
 
 <ul class="nav-links">
 
-<li><a href="index.html">Home</a></li>
-<li><a href="tools.html" class="active">Tools</a></li>
-<li><a href="games.html">Games</a></li>
+<li>
+
+<a href="index.html">
+Home
+</a>
+
+</li>
+
+<li>
+
+<a class="active"
+href="tools.html">
+
+Tools
+
+</a>
+
+</li>
+
+<li>
+
+<a href="games.html">
+Games
+</a>
+
+</li>
+
+<li>
+
+<a href="apk.html">
+APK
+</a>
+
+</li>
+
+<li>
+
+<a href="movies.html">
+Movies
+</a>
+
+</li>
+
+<li>
+
+<a href="music.html">
+Music
+</a>
+
+</li>
+
+<li>
+
+<a href="about.html">
+About
+</a>
+
+</li>
 
 </ul>
 
-<a class="discord-btn" href="https://discord.gg/" target="_blank">
+<a class="discord-btn"
+
+href="https://discord.gg/"
+
+target="_blank">
+
+<i class="fab fa-discord"></i>
+
 Discord
+
 </a>
 
 </div>
@@ -47,42 +148,64 @@ Discord
 </header>
 
 <!-- ================= HERO ================= -->
+
 <section class="hero">
-
-<div class="hero-content">
-
-<div class="hero-badge">📦 Official Minecraft Server Tool</div>
-
-<h1>PaperMC Build Checker</h1>
-
-<p class="hero-subtitle">
-Get latest PaperMC version, build number & official download instantly.
-</p>
-
-</div>
-
-</section>
-
-<!-- ================= TOOL BOX ================= -->
-<section>
 
 <div class="container">
 
-<div class="glass-card feature-card">
+<div class="hero-content">
 
-<div class="feature-icon">📦</div>
+<div class="hero-badge">
 
-<h3>Live PaperMC Version Checker</h3>
+📦 Official PaperMC API
 
-<p id="paper-status">Loading latest PaperMC version...</p>
+</div>
 
-<p id="paper-build">Build: --</p>
+<h1>
 
-<a id="paper-download"
-class="card-btn"
-target="_blank">
+PaperMC
 
-⬇ Download Latest
+<span>Pro Dashboard</span>
+
+</h1>
+
+<p class="hero-subtitle">
+
+Monitor every PaperMC release instantly.
+
+Download official builds,
+
+browse previous versions,
+
+compare server software,
+
+and manage Minecraft servers
+
+from one modern dashboard.
+
+</p>
+
+<div class="hero-buttons">
+
+<a href="#dashboard"
+
+class="btn btn-primary">
+
+<i class="fas fa-rocket"></i>
+
+Open Dashboard
+
+</a>
+
+<a href="https://papermc.io/downloads/paper"
+
+target="_blank"
+
+class="btn btn-secondary">
+
+<i class="fas fa-download"></i>
+
+Official Downloads
 
 </a>
 
@@ -90,184 +213,1007 @@ target="_blank">
 
 </div>
 
+</div>
+
 </section>
 
-<!-- ================= FOOTER ================= -->
+<!-- ================= LIVE STATUS ================= -->
+
+<section id="dashboard">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>
+
+Live PaperMC Status
+
+</h2>
+
+<p>
+
+Powered directly by the official PaperMC API
+
+</p>
+
+</div>
+
+<div class="feature-grid">
+
+<!-- Latest Version -->
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-cube"></i>
+
+</div>
+
+<h3>
+
+Latest Version
+
+</h3>
+
+<h2 id="latestVersion">
+
+Loading...
+
+</h2>
+
+</div>
+
+<!-- Latest Build -->
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-hammer"></i>
+
+</div>
+
+<h3>
+
+Latest Build
+
+</h3>
+
+<h2 id="latestBuild">
+
+Loading...
+
+</h2>
+
+</div>
+
+<!-- API Status -->
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-server"></i>
+
+</div>
+
+<h3>
+
+API Status
+
+</h3>
+
+<h2 id="apiStatus">
+
+Checking...
+
+</h2>
+
+</div>
+
+<!-- Download -->
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-download"></i>
+
+</div>
+
+<h3>
+
+Official Download
+
+</h3>
+
+<a
+
+id="downloadLatest"
+
+class="btn btn-primary"
+
+target="_blank">
+
+Download Latest
+
+</a>
+
+</div>
+
+</div>
+<!-- ==========================================
+PART 2
+PaperMC Pro Dashboard
+Continue below Part 1
+========================================== -->
+
+<!-- =========================
+VERSION SELECTOR
+========================= -->
+
+<div style="height:35px;"></div>
+
+<div class="glass-card">
+
+<div style="padding:30px;">
+
+<h2>Select Minecraft Version</h2>
+
+<p style="opacity:.7;margin-top:10px;">
+Choose any supported PaperMC version and instantly view all available builds.
+</p>
+
+<div class="hero-buttons" style="margin-top:25px;">
+
+<select id="versionSelect"
+class="btn btn-secondary"
+style="min-width:220px;">
+
+<option>
+Loading Versions...
+</option>
+
+</select>
+
+<button
+id="refreshVersions"
+class="btn btn-primary">
+
+<i class="fas fa-rotate-right"></i>
+
+Refresh
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div style="height:35px;"></div>
+
+<!-- =========================
+LATEST BUILD INFORMATION
+========================= -->
+
+<div class="feature-grid">
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-calendar"></i>
+
+</div>
+
+<h3>Release Date</h3>
+
+<h2 id="releaseDate">
+
+Loading...
+
+</h2>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-code-branch"></i>
+
+</div>
+
+<h3>Version</h3>
+
+<h2 id="currentVersion">
+
+Loading...
+
+</h2>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-file-archive"></i>
+
+</div>
+
+<h3>Download Size</h3>
+
+<h2 id="jarSize">
+
+Unknown
+
+</h2>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-cloud-download-alt"></i>
+
+</div>
+
+<h3>Official Download</h3>
+
+<a
+id="downloadButton"
+
+target="_blank"
+
+class="btn btn-primary">
+
+Download Jar
+
+</a>
+
+</div>
+
+</div>
+
+<div style="height:40px;"></div>
+
+<!-- =========================
+BUILD HISTORY
+========================= -->
+
+<div class="glass-card">
+
+<div style="padding:30px;">
+
+<h2>
+
+Recent Builds
+
+</h2>
+
+<p style="opacity:.7;margin-top:8px;">
+
+Latest PaperMC builds fetched directly from the official API.
+
+</p>
+
+<div style="overflow:auto;margin-top:25px;">
+
+<table class="build-table">
+
+<thead>
+
+<tr>
+
+<th>Build</th>
+
+<th>Channel</th>
+
+<th>Download</th>
+
+</tr>
+
+</thead>
+
+<tbody id="buildTable">
+
+<tr>
+
+<td colspan="3">
+
+Loading latest builds...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<div style="height:45px;"></div>
+
+<!-- =========================
+OFFICIAL LINKS
+========================= -->
+
+<div class="feature-grid">
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-book"></i>
+
+</div>
+
+<h3>Documentation</h3>
+
+<p>
+
+Official PaperMC documentation.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://docs.papermc.io/">
+
+Open →
+
+</a>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fab fa-github"></i>
+
+</div>
+
+<h3>GitHub</h3>
+
+<p>
+
+PaperMC official GitHub repository.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://github.com/PaperMC">
+
+Open →
+
+</a>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+
+<i class="fas fa-globe"></i>
+
+</div>
+
+<h3>Website</h3>
+
+<p>
+
+Visit the official PaperMC website.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://papermc.io">
+
+Open →
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Continue with Part 3 -->
+  <!-- ==========================================
+PART 3
+Official PaperMC API JavaScript
+Place before </body>
+========================================== -->
+
+<script>
+
+/* ==========================================
+ELEMENTS
+========================================== */
+
+const latestVersion =
+document.getElementById("latestVersion");
+
+const latestBuild =
+document.getElementById("latestBuild");
+
+const apiStatus =
+document.getElementById("apiStatus");
+
+const downloadLatest =
+document.getElementById("downloadLatest");
+
+const downloadButton =
+document.getElementById("downloadButton");
+
+const currentVersion =
+document.getElementById("currentVersion");
+
+const releaseDate =
+document.getElementById("releaseDate");
+
+const versionSelect =
+document.getElementById("versionSelect");
+
+const buildTable =
+document.getElementById("buildTable");
+
+const refreshButton =
+document.getElementById("refreshVersions");
+
+
+/* ==========================================
+LOAD ALL MINECRAFT VERSIONS
+========================================== */
+
+async function loadVersions(){
+
+try{
+
+const response =
+await fetch(
+"https://api.papermc.io/v2/projects/paper"
+);
+
+const data =
+await response.json();
+
+versionSelect.innerHTML="";
+
+data.versions.reverse().forEach(version=>{
+
+const option =
+document.createElement("option");
+
+option.value = version;
+
+option.innerText = version;
+
+versionSelect.appendChild(option);
+
+});
+
+loadBuilds(versionSelect.value);
+
+}
+
+catch(e){
+
+apiStatus.innerText="Offline";
+
+}
+
+}
+
+
+/* ==========================================
+LOAD BUILDS
+========================================== */
+
+async function loadBuilds(version){
+
+try{
+
+apiStatus.innerText="Online";
+
+currentVersion.innerText=version;
+
+const response =
+await fetch(
+`https://api.papermc.io/v2/projects/paper/versions/${version}`
+);
+
+const data =
+await response.json();
+
+const builds =
+data.builds;
+
+const newest =
+builds[builds.length-1];
+
+latestVersion.innerText=version;
+
+latestBuild.innerText="#" + newest;
+
+const jar =
+`https://api.papermc.io/v2/projects/paper/versions/${version}/builds/${newest}/downloads/paper-${version}-${newest}.jar`;
+
+downloadLatest.href=jar;
+
+downloadButton.href=jar;
+
+buildTable.innerHTML="";
+
+builds.reverse().slice(0,20).forEach(build=>{
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+
+<td>#${build}</td>
+
+<td>Stable</td>
+
+<td>
+
+<a
+class="btn btn-primary"
+
+target="_blank"
+
+href="https://api.papermc.io/v2/projects/paper/versions/${version}/builds/${build}/downloads/paper-${version}-${build}.jar">
+
+Download
+
+</a>
+
+</td>
+
+`;
+
+buildTable.appendChild(tr);
+
+});
+
+releaseDate.innerText=
+new Date().toLocaleDateString();
+
+}
+
+catch(e){
+
+apiStatus.innerText="API Error";
+
+console.log(e);
+
+}
+
+}
+
+
+/* ==========================================
+EVENTS
+========================================== */
+
+versionSelect.addEventListener("change",()=>{
+
+loadBuilds(versionSelect.value);
+
+});
+
+refreshButton.addEventListener("click",()=>{
+
+loadVersions();
+
+});
+
+
+/* ==========================================
+AUTO LOAD
+========================================== */
+
+loadVersions();
+
+
+/* ==========================================
+AUTO REFRESH EVERY 5 MINUTES
+========================================== */
+
+setInterval(()=>{
+
+loadVersions();
+
+},300000);
+
+</script>
+
+<!-- Continue in Part 4 -->
+  <!-- ==========================================
+PART 4 (FINAL)
+PaperMC Pro Dashboard
+Continue after Part 3
+========================================== -->
+
+<!-- =========================
+SERVER SOFTWARE
+========================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Supported Server Software</h2>
+
+<p>
+Compare popular Minecraft server software.
+</p>
+
+</div>
+
+<div class="feature-grid">
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+📦
+</div>
+
+<h3>PaperMC</h3>
+
+<p>
+
+Fast, stable and the most popular server software with plugin support.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://papermc.io/downloads/paper">
+
+Official Download →
+
+</a>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+⚡
+</div>
+
+<h3>Velocity</h3>
+
+<p>
+
+Modern Minecraft proxy built for speed and scalability.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://papermc.io/software/velocity">
+
+Official Download →
+
+</a>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🚀
+</div>
+
+<h3>Folia</h3>
+
+<p>
+
+Experimental multithreaded Minecraft server software.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://papermc.io/software/folia">
+
+Official Download →
+
+</a>
+
+</div>
+
+<div class="glass-card feature-card">
+
+<div class="feature-icon">
+🌐
+</div>
+
+<h3>Waterfall</h3>
+
+<p>
+
+High-performance BungeeCord fork maintained by PaperMC.
+
+</p>
+
+<a
+
+class="card-btn"
+
+target="_blank"
+
+href="https://papermc.io/software/waterfall">
+
+Official Download →
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+QUICK LINKS
+========================= -->
+
+<section>
+
+<div class="container">
+
+<div class="glass-card">
+
+<div style="padding:35px;">
+
+<h2>Official PaperMC Resources</h2>
+
+<div class="hero-buttons">
+
+<a
+
+class="btn btn-primary"
+
+target="_blank"
+
+href="https://papermc.io">
+
+Website
+
+</a>
+
+<a
+
+class="btn btn-secondary"
+
+target="_blank"
+
+href="https://docs.papermc.io">
+
+Documentation
+
+</a>
+
+<a
+
+class="btn btn-secondary"
+
+target="_blank"
+
+href="https://github.com/PaperMC">
+
+GitHub
+
+</a>
+
+<a
+
+class="btn btn-secondary"
+
+target="_blank"
+
+href="https://discord.gg/papermc">
+
+Discord
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+BACK TO TOP
+========================= -->
+
+<button id="topBtn">
+
+<i class="fas fa-arrow-up"></i>
+
+</button>
+
+<!-- =========================
+FOOTER
+========================= -->
+
 <footer class="footer">
 
-<div class="container footer-grid">
+<div class="container">
+
+<div class="footer-grid">
 
 <div class="footer-column">
-<h4>CyrusLinksHub</h4>
-<p style="color:rgba(255,255,255,0.6)">
-Minecraft Tools • Gaming • Utilities
+
+<div class="footer-logo">
+
+<div class="logo-box">
+
+<img src="logo.png" alt="Logo">
+
+</div>
+
+<div>
+
+<h3>CyrusLinksHub</h3>
+
+<p>
+Minecraft Tools Platform
 </p>
+
+</div>
+
+</div>
+
 </div>
 
 <div class="footer-column">
+
 <h4>Navigation</h4>
+
 <ul>
+
 <li><a href="index.html">Home</a></li>
+
 <li><a href="tools.html">Tools</a></li>
+
 <li><a href="games.html">Games</a></li>
+
+<li><a href="about.html">About</a></li>
+
 </ul>
+
 </div>
 
 <div class="footer-column">
-<h4>Community</h4>
+
+<h4>Resources</h4>
+
 <ul>
-<li><a href="https://discord.gg/" target="_blank">Discord</a></li>
-<li><a href="#">GitHub</a></li>
-<li><a href="#">YouTube</a></li>
+
+<li><a href="https://papermc.io" target="_blank">PaperMC</a></li>
+
+<li><a href="https://docs.papermc.io" target="_blank">Documentation</a></li>
+
+<li><a href="https://github.com/PaperMC" target="_blank">GitHub</a></li>
+
 </ul>
+
+</div>
+
+<div class="footer-column">
+
+<h4>Community</h4>
+
+<ul>
+
+<li><a href="https://discord.gg/" target="_blank">Discord</a></li>
+
+<li><a href="#">YouTube</a></li>
+
+<li><a href="#">GitHub</a></li>
+
+</ul>
+
 </div>
 
 </div>
 
 <div class="footer-bottom">
+
 © 2026 CyrusLinksHub • All Rights Reserved
+
+</div>
+
 </div>
 
 </footer>
 
-<!-- ================= BACK TO TOP ================= -->
-<button id="topBtn">↑</button>
+<!-- =========================
+BACK TO TOP SCRIPT
+========================= -->
 
-<!-- ================= PARTICLES ================= -->
-<canvas id="particles"></canvas>
-
-<!-- ================= SCRIPT ================= -->
 <script>
 
-/* ================= PAPERMC API ================= */
-
-async function loadPaperMC(){
-
-try{
-
-const res = await fetch("https://api.papermc.io/v2/projects/paper");
-const data = await res.json();
-
-const latestVersion =
-data.versions[data.versions.length - 1];
-
-const buildRes = await fetch(
-`https://api.papermc.io/v2/projects/paper/versions/${latestVersion}`
-);
-
-const buildData = await buildRes.json();
-
-const latestBuild =
-buildData.builds[buildData.builds.length - 1];
-
-/* UPDATE UI */
-
-document.getElementById("paper-status").innerText =
-"Latest Version: " + latestVersion;
-
-document.getElementById("paper-build").innerText =
-"Latest Build: #" + latestBuild;
-
-/* DOWNLOAD LINK */
-
-const downloadURL =
-`https://api.papermc.io/v2/projects/paper/versions/${latestVersion}/builds/${latestBuild}/downloads/paper-${latestVersion}-${latestBuild}.jar`;
-
-document.getElementById("paper-download").href =
-downloadURL;
-
-}
-
-catch(err){
-
-document.getElementById("paper-status").innerText =
-"Failed to load PaperMC API ❌";
-
-console.log(err);
-
-}
-
-}
-
-loadPaperMC();
-
-setInterval(loadPaperMC, 300000); // auto refresh 5 min
-
-/* ================= BACK TO TOP ================= */
-
-const topBtn = document.getElementById("topBtn");
+const topBtn=document.getElementById("topBtn");
 
 window.addEventListener("scroll",()=>{
 
-topBtn.style.display =
-window.scrollY > 300 ? "block" : "none";
+topBtn.style.display=
+window.scrollY>250
+?
+"flex"
+:
+"none";
 
 });
 
-topBtn.onclick = ()=>{
+topBtn.onclick=()=>{
 
-window.scrollTo({top:0, behavior:"smooth"});
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
 
 };
-
-/* ================= PARTICLES ================= */
-
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<120;i++){
-
-particles.push({
-
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2,
-dx:(Math.random()-0.5)*0.4,
-dy:(Math.random()-0.5)*0.4
-
-});
-
-}
-
-function animate(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-particles.forEach(p=>{
-
-p.x += p.dx;
-p.y += p.dy;
-
-if(p.x<0) p.x = canvas.width;
-if(p.x>canvas.width) p.x = 0;
-
-if(p.y<0) p.y = canvas.height;
-if(p.y>canvas.height) p.y = 0;
-
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-
-ctx.fillStyle = "#1be7ff";
-ctx.shadowBlur = 10;
-ctx.shadowColor = "#1be7ff";
-
-ctx.fill();
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
-animate();
 
 </script>
 
 </body>
-
 </html>
