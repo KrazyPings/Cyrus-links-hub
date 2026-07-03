@@ -2,111 +2,175 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>PaperMC Build Checker | CyrusLinksHub</title>
 
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
+<!-- BACKGROUND -->
 <canvas id="particles"></canvas>
 
+<!-- ================= NAVBAR ================= -->
+
 <header class="header">
-  <div class="container navbar">
 
-    <div class="logo">
-      <h2 class="animated-logo">CYRUSLINKSHUB</h2>
-      <span>Minecraft Tools Platform</span>
-    </div>
+<div class="container navbar">
 
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a class="active" href="tools.html">Tools</a></li>
-      <li><a href="games.html">Games</a></li>
-      <li><a href="apk.html">APK</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
+<!-- Animated Logo -->
+<div class="logo">
+<h2 class="animated-logo">CYRUSLINKSHUB</h2>
+<span>Minecraft Tools Platform</span>
+</div>
 
-    <a class="discord-btn" href="#" target="_blank">Discord</a>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a class="active" href="tools.html">Tools</a></li>
+<li><a href="games.html">Games</a></li>
+<li><a href="apk.html">APK</a></li>
+<li><a href="about.html">About</a></li>
+</ul>
 
-  </div>
+<a class="discord-btn"
+href="https://discord.gg/"
+target="_blank">
+Discord
+</a>
+
+</div>
+
 </header>
 
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-  <div class="container">
-    <div class="hero-content">
 
-      <div class="hero-badge">📦 Official PaperMC API</div>
+<div class="container">
 
-      <h1>PaperMC <span>Build Checker</span></h1>
+<div class="hero-content">
 
-      <p class="hero-subtitle">
-        Real-time Minecraft PaperMC build tracking tool
-      </p>
+<div class="hero-badge">
+📦 Official PaperMC API
+</div>
 
-    </div>
-  </div>
+<h1>
+PaperMC <span>Build Checker</span>
+</h1>
+
+<p class="hero-subtitle">
+Select any Minecraft version and fetch the latest PaperMC build instantly.
+</p>
+
+</div>
+
+</div>
+
 </section>
 
+<!-- ================= MAIN TOOL ================= -->
+
 <section>
+
 <div class="container">
 
 <div class="glass-card">
 
-  <div style="padding:30px;">
+<div style="padding:40px;">
 
-    <h2>PaperMC Build Checker</h2>
-    <p style="opacity:0.7;">Live API + Real-time updates</p>
+<h2>PaperMC Build Checker</h2>
 
-    <!-- VERSION -->
-    <label>Minecraft Version</label>
-    <select id="versionSelect" class="btn btn-secondary" style="width:100%; margin-top:10px;">
-      <option>Loading versions...</option>
-    </select>
+<p style="opacity:.7;margin-top:8px;">
+Live API-powered tool for all Minecraft versions
+</p>
 
-    <!-- BUTTON -->
-    <button id="getBuild" class="btn btn-primary" style="width:100%; margin-top:15px;">
-      Get Latest Build
-    </button>
+<!-- VERSION SELECT -->
 
-    <!-- OUTPUT -->
-    <div class="feature-grid" style="margin-top:30px;">
+<div style="margin-top:25px;">
 
-      <div class="glass-card feature-card">
-        <h3>Version</h3>
-        <h2 id="mcVersion">--</h2>
-      </div>
+<label for="versionSelect">
+Minecraft Version
+</label>
 
-      <div class="glass-card feature-card">
-        <h3>Build</h3>
-        <h2 id="buildNumber">--</h2>
-      </div>
+<select
+id="versionSelect"
+class="btn btn-secondary"
+style="width:100%;margin-top:10px;">
 
-      <div class="glass-card feature-card">
-        <h3>Status</h3>
-        <h2 id="apiStatus">Waiting...</h2>
-      </div>
+<option>Loading versions...</option>
 
-      <div class="glass-card feature-card">
-        <h3>Download</h3>
-        <a id="downloadButton" class="btn btn-primary" target="_blank">
-          Download
-        </a>
-      </div>
+</select>
+
+</div>
+
+<!-- BUTTON -->
+
+<div style="margin-top:20px;">
+
+<button
+id="getBuild"
+class="btn btn-primary"
+style="width:100%;">
+
+Get Latest Build
+
+</button>
+
+</div>
+
+<!-- OUTPUT -->
+
+<div class="feature-grid" style="margin-top:35px;">
+
+<div class="glass-card feature-card">
+<h3>Version</h3>
+<h2 id="mcVersion">--</h2>
+</div>
+
+<div class="glass-card feature-card">
+<h3>Build</h3>
+<h2 id="buildNumber">--</h2>
+</div>
+
+<div class="glass-card feature-card">
+<h3>Status</h3>
+<h2 id="apiStatus">Waiting...</h2>
+</div>
+
+<div class="glass-card feature-card">
+<h3>Download</h3>
+
+<a
+id="downloadButton"
+class="btn btn-primary"
+target="_blank">
+
+Download
+
+</a>
+
+</div>
+
+</div>
+        </div>
 
     </div>
 
-  </div>
-
 </div>
 
-</div>
 </section>
 
 <script>
+
+/* ===============================
+   ELEMENTS
+================================ */
+
 const versionSelect = document.getElementById("versionSelect");
 const getBuild = document.getElementById("getBuild");
 
@@ -115,126 +179,170 @@ const buildNumber = document.getElementById("buildNumber");
 const apiStatus = document.getElementById("apiStatus");
 const downloadButton = document.getElementById("downloadButton");
 
-let cache = {};
-let autoRefreshInterval;
+/* Disable download until API loads */
+downloadButton.removeAttribute("href");
 
-/* ================= LOAD VERSIONS ================= */
+/* ===============================
+   LOAD ALL MINECRAFT VERSIONS
+================================ */
+
 async function loadVersions() {
-  try {
-    apiStatus.innerText = "Loading versions...";
-
-    const res = await fetch("https://api.papermc.io/v2/projects/paper");
-    const data = await res.json();
-
-    versionSelect.innerHTML = "";
-
-    data.versions.reverse().forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      versionSelect.appendChild(opt);
-    });
-
-    versionSelect.selectedIndex = 0;
-
-    apiStatus.innerText = "API Online";
-
-    getPaperBuild();
-
-    startAutoRefresh();
-
-  } catch (err) {
-    console.error(err);
-    apiStatus.innerText = "API Error";
-  }
-}
-
-/* ================= GET BUILD ================= */
-async function getPaperBuild() {
-  const version = versionSelect.value;
-  if (!version) return;
-
-  try {
-    mcVersion.innerText = version;
-    buildNumber.innerText = "Loading...";
-    apiStatus.innerText = "Fetching...";
-
-    const res = await fetch(
-      `https://api.papermc.io/v2/projects/paper/versions/${version}/builds`
-    );
-
-    const data = await res.json();
-
-    if (!data.builds?.length) {
-      throw new Error("No builds found");
-    }
-
-    const latest = data.builds[data.builds.length - 1];
-
-    cache[version] = latest;
-
-    render(version, latest);
-
-    apiStatus.innerText = "Live";
-
-  } catch (err) {
-    console.error(err);
-    apiStatus.innerText = "Failed";
-  }
-}
-
-/* ================= RENDER ================= */
-function render(version, build) {
-
-  mcVersion.innerText = version;
-  buildNumber.innerText = "#" + build;
-
-  const file = `paper-${version}-${build}.jar`;
-
-  const url =
-    `https://api.papermc.io/v2/projects/paper/versions/${version}/builds/${build}/downloads/${file}`;
-
-  downloadButton.href = url;
-}
-
-/* ================= REAL TIME UPDATE ================= */
-function startAutoRefresh() {
-
-  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-
-  autoRefreshInterval = setInterval(async () => {
-
-    const version = versionSelect.value;
-    if (!version) return;
 
     try {
-      const res = await fetch(
-        `https://api.papermc.io/v2/projects/paper/versions/${version}/builds`
-      );
 
-      const data = await res.json();
+        apiStatus.innerText = "Loading versions...";
 
-      const latest = data.builds[data.builds.length - 1];
+        const res = await fetch(
+            "https://api.papermc.io/v2/projects/paper"
+        );
 
-      if (cache[version] !== latest) {
-        cache[version] = latest;
-        render(version, latest);
-        apiStatus.innerText = "Updated (Live)";
-      }
+        if (!res.ok) {
+            throw new Error("API Error");
+        }
 
-    } catch (err) {
-      console.log("Auto update error", err);
+        const data = await res.json();
+
+        versionSelect.innerHTML = "";
+
+        [...data.versions]
+            .reverse()
+            .forEach(version => {
+
+                const option = document.createElement("option");
+
+                option.value = version;
+                option.textContent = version;
+
+                versionSelect.appendChild(option);
+
+            });
+
+        apiStatus.innerText = "API Online";
+
+    } catch (error) {
+
+        console.error(error);
+
+        apiStatus.innerText = "API Error";
+
     }
 
-  }, 15000); // every 15 seconds (REAL TIME FEEL)
 }
+      /* ===============================
+       GET LATEST PAPER BUILD
+    =============================== */
 
-/* ================= EVENTS ================= */
-getBuild.addEventListener("click", getPaperBuild);
-versionSelect.addEventListener("change", getPaperBuild);
+    async function getPaperBuild() {
 
-/* ================= INIT ================= */
-loadVersions();
+        const version = versionSelect.value;
+
+        if (!version) return;
+
+        try {
+
+            mcVersion.innerText = version;
+            buildNumber.innerText = "Loading...";
+            apiStatus.innerText = "Fetching...";
+
+            downloadButton.removeAttribute("href");
+
+            const res = await fetch(
+                `https://api.papermc.io/v2/projects/paper/versions/${version}`
+            );
+
+            if (!res.ok) {
+                throw new Error("API Error");
+            }
+
+            const data = await res.json();
+
+            if (!data.builds || data.builds.length === 0) {
+
+                buildNumber.innerText = "--";
+                apiStatus.innerText = "No Builds";
+                return;
+
+            }
+
+            const build = data.builds[data.builds.length - 1];
+
+            buildNumber.innerText = "#" + build;
+
+            const file = `paper-${version}-${build}.jar`;
+
+            const url =
+                `https://api.papermc.io/v2/projects/paper/versions/${version}/builds/${build}/downloads/${file}`;
+
+            downloadButton.href = url;
+
+            apiStatus.innerText = "Ready";
+
+        } catch (error) {
+
+            console.error(error);
+
+            buildNumber.innerText = "--";
+            apiStatus.innerText = "Failed";
+
+            downloadButton.removeAttribute("href");
+
+        }
+
+    }
+
+    /* ===============================
+       BUTTON EVENT
+    =============================== */
+
+    getBuild.addEventListener("click", getPaperBuild);
+      /* ===============================
+       INITIAL LOAD
+    =============================== */
+
+    async function initialize() {
+
+        await loadVersions();
+
+        if (versionSelect.options.length > 0) {
+
+            versionSelect.selectedIndex = 0;
+
+            await getPaperBuild();
+
+        }
+
+    }
+
+    initialize();
+
+    /* ===============================
+       AUTO UPDATE EVERY 5 MINUTES
+    =============================== */
+
+    setInterval(async () => {
+
+        const currentVersion = versionSelect.value;
+
+        await loadVersions();
+
+        /* Restore selected version if it still exists */
+        const option = [...versionSelect.options].find(
+            opt => opt.value === currentVersion
+        );
+
+        if (option) {
+
+            versionSelect.value = currentVersion;
+
+        } else {
+
+            versionSelect.selectedIndex = 0;
+
+        }
+
+        await getPaperBuild();
+
+    }, 300000);
 
 </script>
 
