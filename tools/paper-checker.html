@@ -2,427 +2,241 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyrusLinksHub | PaperMC Build Engine Diagnostic Suite</title>
-    <meta name="description" content="Professional real-time tracking engine for automated tracking and direct distribution maps of PaperMC core binaries.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        /* Exact Theme Match Alignment Elements */
-        .checker-card {
-            max-width: 950px;
-            margin: 0 auto;
-            padding: 40px;
-        }
+<title>PaperMC Build Checker | CyrusLinksHub</title>
 
-        .input-group {
-            display: flex;
-            gap: 12px;
-            margin: 25px 0;
-            flex-wrap: wrap;
-        }
-        
-        /* Themed drop-down match */
-        .server-select {
-            padding: 16px 22px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            outline: none;
-            transition: 0.3s;
-            width: 100%;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-        }
-        
-        .server-select option {
-            background: #090e18;
-            color: #fff;
-        }
-        
-        #versionSelect { flex: 2; width: auto; }
-        
-        .server-select:focus {
-            border-color: #1be7ff;
-            background: rgba(27, 231, 255, 0.04);
-            box-shadow: 0 0 15px rgba(27, 231, 255, 0.2);
-        }
-        
-        .btn-check {
-            background: linear-gradient(135deg, #6e6bff, #1be7ff);
-            border: none;
-            color: white;
-            padding: 16px 30px;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-check:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(27, 231, 255, 0.5);
-        }
-        
-        /* Exact Feature Matrix Grid Layout */
-        .telemetry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 16px;
-            margin-top: 35px;
-        }
-        .telemetry-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 18px;
-            border-radius: 14px;
-            position: relative;
-            overflow: hidden;
-            text-align: left;
-        }
-        .telemetry-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 3px; height: 100%;
-            background: #1be7ff;
-        }
-        .telemetry-box.purple::before { background: #6e6bff; }
-        .telemetry-box.pink::before { background: #ff4d94; }
-        
-        .telemetry-box h3 {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.45);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            margin: 0;
-        }
-        .telemetry-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 19px;
-            margin-top: 8px;
-            color: #fff;
-            word-break: break-all;
-        }
-
-        .btn-download {
-            background: linear-gradient(135deg, #6e6bff, #1be7ff);
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(27, 231, 255, 0.5);
-        }
-        .btn-download.disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            pointer-events: none;
-            box-shadow: none !important;
-            transform: none !important;
-        }
-        
-        .loader {
-            display: none;
-            font-size: 20px;
-            font-family: 'Orbitron', sans-serif;
-            color: #1be7ff;
-            margin-top: 25px;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.5);
-            font-weight: 600;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            text-decoration: none;
-        }
-        .back-link:hover {
-            color: #1be7ff;
-            transform: translateX(-3px);
-        }
-
-        @media(max-width: 768px) {
-            .checker-card { padding: 20px 15px; }
-            .input-group { flex-direction: column; gap: 10px; }
-            #versionSelect, .btn-check { flex: none; width: 100%; }
-            .btn-check { justify-content: center; padding: 14px 20px; }
-            .telemetry-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <canvas id="particles"></canvas>
+<canvas id="particles"></canvas>
 
-    <div class="bg-glow glow-left"></div>
-    <div class="bg-glow glow-right"></div>
-    <div class="bg-glow glow-bottom"></div>
+<header class="header">
+  <div class="container navbar">
 
-    <header class="header">
-        <div class="container navbar">
-            <div class="logo">
-                <h2 class="animated-logo">CYRUSLINKSHUB</h2>
-                <span>Minecraft Tools Platform</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a class="active" href="tools.html">Tools</a></li>
-                <li><a href="games.html">Games</a></li>
-                <li><a href="apk.html">APK</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <a class="discord-btn" href="https://discord.gg/" target="_blank">Discord</a>
-        </div>
-    </header>
+    <div class="logo">
+      <h2 class="animated-logo">CYRUSLINKSHUB</h2>
+      <span>Minecraft Tools Platform</span>
+    </div>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">📦 Official PaperMC API</div>
-                <h1>PaperMC <span>Build Checker</span></h1>
-                <p class="hero-subtitle">
-                    Select any Minecraft version and fetch the latest PaperMC build instantly.
-                </p>
-            </div>
-        </div>
-    </section>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a class="active" href="tools.html">Tools</a></li>
+      <li><a href="games.html">Games</a></li>
+      <li><a href="apk.html">APK</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
 
-    <main style="padding: 20px 0;">
-        <div class="container">
-            
-            <a href="tools.html" class="back-link">
-                <i class="fa-solid fa-arrow-left-long"></i> Return to Utilities Hub
-            </a>
+    <a class="discord-btn" href="#" target="_blank">Discord</a>
 
-            <section style="padding: 0; text-align: center;">
-                <div class="glass-card checker-card">
-                    
-                    <h2 style="font-family: 'Orbitron', sans-serif; text-align: left; font-size: 24px;">PaperMC Build Checker</h2>
-                    <p style="opacity:0.7; margin-top:8px; text-align: left; font-family: 'Rajdhani', sans-serif; font-size: 16px;">
-                        Live API-powered tool for all Minecraft versions
-                    </p>
+  </div>
+</header>
 
-                    <div class="input-group">
-                        <select id="versionSelect" class="server-select">
-                            <option value="">Loading versions...</option>
-                        </select>
-                        <button id="getBuild" class="btn-check">
-                            <i class="fa-solid fa-satellite-dish"></i> Get Latest Build
-                        </button>
-                    </div>
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
 
-                    <div id="loadingIndicator" class="loader">
-                        <i class="fa-solid fa-atom fa-spin"></i> Fetching Platform Metrics...
-                    </div>
+      <div class="hero-badge">📦 Official PaperMC API</div>
 
-                    <div class="telemetry-grid">
-                        <div class="telemetry-box">
-                            <h3>Version</h3>
-                            <h2 id="mcVersion">--</h2>
-                        </div>
+      <h1>PaperMC <span>Build Checker</span></h1>
 
-                        <div class="glass-card telemetry-box purple">
-                            <h3>Build</h3>
-                            <h2 id="buildNumber">--</h2>
-                        </div>
+      <p class="hero-subtitle">
+        Real-time Minecraft PaperMC build tracking tool
+      </p>
 
-                        <div class="glass-card telemetry-box pink">
-                            <h3>Status</h3>
-                            <h2 id="apiStatus">Waiting...</h2>
-                        </div>
+    </div>
+  </div>
+</section>
 
-                        <div class="glass-card telemetry-box">
-                            <h3>Download</h3>
-                            <a id="downloadButton" class="btn-download disabled" target="_blank">
-                                <i class="fa-solid fa-cloud-arrow-down"></i> Download
-                            </a>
-                        </div>
-                    </div>
+<section>
+<div class="container">
 
-                </div>
-            </section>
-        </div>
-    </main>
+<div class="glass-card">
 
-    <script>
-        /* ELEMENTS */
-        const versionSelect = document.getElementById("versionSelect");
-        const getBuild = document.getElementById("getBuild");
-        const mcVersion = document.getElementById("mcVersion");
-        const buildNumber = document.getElementById("buildNumber");
-        const apiStatus = document.getElementById("apiStatus");
-        const downloadButton = document.getElementById("downloadButton");
-        const loader = document.getElementById("loadingIndicator");
+  <div style="padding:30px;">
 
-        /* LOAD VERSIONS */
-        async function loadVersions() {
-            try {
-                apiStatus.innerText = "Syncing...";
-                const res = await fetch("https://api.papermc.io/v2/projects/paper");
-                if (!res.ok) throw new Error();
-                
-                const data = await res.json();
-                const versions = data?.versions || [];
-                if (versions.length === 0) throw new Error();
+    <h2>PaperMC Build Checker</h2>
+    <p style="opacity:0.7;">Live API + Real-time updates</p>
 
-                versionSelect.innerHTML = "";
+    <!-- VERSION -->
+    <label>Minecraft Version</label>
+    <select id="versionSelect" class="btn btn-secondary" style="width:100%; margin-top:10px;">
+      <option>Loading versions...</option>
+    </select>
 
-                // Reverse sorting to put newest architectures up top
-                [...versions].reverse().forEach(v => {
-                    const opt = document.createElement("option");
-                    opt.value = v;
-                    opt.textContent = v;
-                    versionSelect.appendChild(opt);
-                });
+    <!-- BUTTON -->
+    <button id="getBuild" class="btn btn-primary" style="width:100%; margin-top:15px;">
+      Get Latest Build
+    </button>
 
-                versionSelect.selectedIndex = 0;
-                apiStatus.innerText = "API Online";
-                return true;
-            } catch (err) {
-                apiStatus.innerText = "Index Error";
-                versionSelect.innerHTML = '<option value="">Failed to sync list</option>';
-                return false;
-            }
-        }
+    <!-- OUTPUT -->
+    <div class="feature-grid" style="margin-top:30px;">
 
-        /* GET BUILD */
-        async function getPaperBuild() {
-            const version = versionSelect.value;
-            if (!version) return;
+      <div class="glass-card feature-card">
+        <h3>Version</h3>
+        <h2 id="mcVersion">--</h2>
+      </div>
 
-            loader.style.display = "block";
-            mcVersion.innerText = version;
-            buildNumber.innerText = "...";
-            apiStatus.innerText = "Fetching...";
-            downloadButton.href = "#";
-            downloadButton.classList.add("disabled");
+      <div class="glass-card feature-card">
+        <h3>Build</h3>
+        <h2 id="buildNumber">--</h2>
+      </div>
 
-            try {
-                const res = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(version)}`);
-                if (!res.ok) throw new Error("Track missing");
-                
-                const data = await res.json();
-                const builds = data?.builds || [];
-                if (builds.length === 0) throw new Error("Unreleased");
+      <div class="glass-card feature-card">
+        <h3>Status</h3>
+        <h2 id="apiStatus">Waiting...</h2>
+      </div>
 
-                const latestBuild = builds[builds.length - 1];
-                buildNumber.innerText = "#" + latestBuild;
+      <div class="glass-card feature-card">
+        <h3>Download</h3>
+        <a id="downloadButton" class="btn btn-primary" target="_blank">
+          Download
+        </a>
+      </div>
 
-                const buildRes = await fetch(`https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(version)}/builds/${latestBuild}`);
-                if (!buildRes.ok) throw new Error("Metadata error");
-                
-                const buildData = await buildRes.json();
-                const fileName = buildData?.downloads?.application?.name;
-                if (!fileName) throw new Error("Binary corrupt");
+    </div>
 
-                const url = `https://api.papermc.io/v2/projects/paper/versions/${encodeURIComponent(version)}/builds/${latestBuild}/downloads/${fileName}`;
-                
-                downloadButton.href = url;
-                downloadButton.classList.remove("disabled");
-                apiStatus.innerText = "Ready";
-            } catch (err) {
-                buildNumber.innerText = "--";
-                apiStatus.innerText = err.message || "Failed";
-                downloadButton.href = "#";
-                downloadButton.classList.add("disabled");
-            } finally {
-                loader.style.display = "none";
-            }
-        }
+  </div>
 
-        /* EVENTS WORKFLOW */
-        getBuild.addEventListener("click", getPaperBuild);
+</div>
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            const loaded = await loadVersions();
-            if (loaded) getPaperBuild();
-        });
+</div>
+</section>
 
-        // Safe background pooling interval every 5 minutes
-        setInterval(loadVersions, 300000);
-    </script>
+<script>
+const versionSelect = document.getElementById("versionSelect");
+const getBuild = document.getElementById("getBuild");
 
-    <script>
-        /* Exact Theme Matching Particle Engine */
-        const canvas = document.getElementById("particles");
-        if (canvas) {
-            const ctx = canvas.getContext("2d");
-            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-            resize();
-            window.addEventListener("resize", resize);
+const mcVersion = document.getElementById("mcVersion");
+const buildNumber = document.getElementById("buildNumber");
+const apiStatus = document.getElementById("apiStatus");
+const downloadButton = document.getElementById("downloadButton");
 
-            const particles = [];
-            for (let i = 0; i < 150; i++) {
-                particles.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    r: Math.random() * 2 + 0.6,
-                    dx: (Math.random() - 0.5) * 0.25,
-                    dy: (Math.random() - 0.5) * 0.25
-                });
-            }
+let cache = {};
+let autoRefreshInterval;
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    p.x += p.dx; p.y += p.dy;
-                    if (p.x < 0) p.x = canvas.width;
-                    if (p.x > canvas.width) p.x = 0;
-                    if (p.y < 0) p.y = canvas.height;
-                    if (p.y > canvas.height) p.y = 0;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = "#26F4FF";
-                    ctx.shadowColor = "#26F4FF";
-                    ctx.shadowBlur = 10;
-                    ctx.fill();
-                });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        }
-    </script>
-    <script src="protection.js"></script>
+/* ================= LOAD VERSIONS ================= */
+async function loadVersions() {
+  try {
+    apiStatus.innerText = "Loading versions...";
+
+    const res = await fetch("https://api.papermc.io/v2/projects/paper");
+    const data = await res.json();
+
+    versionSelect.innerHTML = "";
+
+    data.versions.reverse().forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      versionSelect.appendChild(opt);
+    });
+
+    versionSelect.selectedIndex = 0;
+
+    apiStatus.innerText = "API Online";
+
+    getPaperBuild();
+
+    startAutoRefresh();
+
+  } catch (err) {
+    console.error(err);
+    apiStatus.innerText = "API Error";
+  }
+}
+
+/* ================= GET BUILD ================= */
+async function getPaperBuild() {
+  const version = versionSelect.value;
+  if (!version) return;
+
+  try {
+    mcVersion.innerText = version;
+    buildNumber.innerText = "Loading...";
+    apiStatus.innerText = "Fetching...";
+
+    const res = await fetch(
+      `https://api.papermc.io/v2/projects/paper/versions/${version}/builds`
+    );
+
+    const data = await res.json();
+
+    if (!data.builds?.length) {
+      throw new Error("No builds found");
+    }
+
+    const latest = data.builds[data.builds.length - 1];
+
+    cache[version] = latest;
+
+    render(version, latest);
+
+    apiStatus.innerText = "Live";
+
+  } catch (err) {
+    console.error(err);
+    apiStatus.innerText = "Failed";
+  }
+}
+
+/* ================= RENDER ================= */
+function render(version, build) {
+
+  mcVersion.innerText = version;
+  buildNumber.innerText = "#" + build;
+
+  const file = `paper-${version}-${build}.jar`;
+
+  const url =
+    `https://api.papermc.io/v2/projects/paper/versions/${version}/builds/${build}/downloads/${file}`;
+
+  downloadButton.href = url;
+}
+
+/* ================= REAL TIME UPDATE ================= */
+function startAutoRefresh() {
+
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+
+  autoRefreshInterval = setInterval(async () => {
+
+    const version = versionSelect.value;
+    if (!version) return;
+
+    try {
+      const res = await fetch(
+        `https://api.papermc.io/v2/projects/paper/versions/${version}/builds`
+      );
+
+      const data = await res.json();
+
+      const latest = data.builds[data.builds.length - 1];
+
+      if (cache[version] !== latest) {
+        cache[version] = latest;
+        render(version, latest);
+        apiStatus.innerText = "Updated (Live)";
+      }
+
+    } catch (err) {
+      console.log("Auto update error", err);
+    }
+
+  }, 15000); // every 15 seconds (REAL TIME FEEL)
+}
+
+/* ================= EVENTS ================= */
+getBuild.addEventListener("click", getPaperBuild);
+versionSelect.addEventListener("change", getPaperBuild);
+
+/* ================= INIT ================= */
+loadVersions();
+
+</script>
+
 </body>
 </html>
